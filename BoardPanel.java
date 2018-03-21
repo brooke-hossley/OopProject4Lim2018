@@ -7,7 +7,7 @@ import javax.imageio.ImageIO;
 /**
  * Write a description of class BoardPanel here.
  *
- * @author (your name)
+ * @author Patrick Alissa Brooke Chris and Hieu
  * @version (a version number or a date)
  */
 public class BoardPanel extends JFrame
