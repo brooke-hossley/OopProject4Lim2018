@@ -7,10 +7,41 @@ package OopProject4Lim2018;
  * @author (your name here)
  * @version (version number or date here)
  */
-public abstract class Pieces
+public abstract class Piece
 {
-    public Pieces()
+    protected Orientation orient;
+    protected boolean isRotatable;
+    protected boolean isMovable;
+    protected boolean isHit;
+    public Piece(Orientation o, boolean rotatable, boolean movable, boolean hit)
     {
-        
+        orient = o;
+        isRotatable = rotatable;
+        isHit = hit;
+        isMovable = movable;
     }
+    
+    /**
+     * Changes orientation to make the piece be rotated one clockwise. If orient is unknown it will 
+     */
+    public void rotate(){
+        if (orient == Orientation.UP) {
+            orient = Orientation.RIGHT;
+        }
+        else if (orient == Orientation.RIGHT) {
+            orient = Orientation.DOWN;
+        }
+        else if (orient == Orientation.DOWN) {
+            orient = Orientation.LEFT;
+        }
+        else if (orient == Orientation.UNKNOWN || orient == Orientation.LEFT) {
+            orient = Orientation.UP;
+        }
+    }
+    
+    public void hitPiece() {
+        isHit = true;
+    }
+    
 }
+
