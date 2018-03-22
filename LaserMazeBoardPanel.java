@@ -6,8 +6,7 @@ import java.io.*;
 import javax.imageio.*;
 class LaserMazeBoardPanel extends JPanel implements MouseListener {
     private Image board;
-    private Image purpleMirror;
-
+    
     public LaserMazeBoardPanel(String board) {
         this(new ImageIcon(board).getImage());
     }
@@ -31,33 +30,44 @@ class LaserMazeBoardPanel extends JPanel implements MouseListener {
         frame.setTitle("Lase Maze");
         CircleButton fireButton = new CircleButton("FIRE");
         fireButton.setBounds(595,490,100,100);
-        BufferedImage buttonImage1;
+        BufferedImage purpleMirror;
         BufferedImage greenMirror;
-        JButton button1;
-        JButton button2;
+        BufferedImage laserQuestionMark;
+        JButton purpleButton;
+        JButton greenButton;
+        JButton redButton;
         try
         {
-
-            buttonImage1 = ImageIO.read(new File("PurpleMirror.JPG"));
+            //card 1 mirror adding
+            purpleMirror = ImageIO.read(new File("PurpleMirror.JPG"));
             greenMirror = ImageIO.read(new File("GreenMirror.JPG"));
-            button1 = new JButton(new ImageIcon(buttonImage1));
-            button1.setBorder(BorderFactory.createEmptyBorder());
-            button1.setContentAreaFilled(false);
-            button1.setBounds(55,350,90,90);
-            button1.setBorder(BorderFactory.createEmptyBorder());
-            button1.setContentAreaFilled(false); 
-            panel.add(button1);
+            laserQuestionMark = ImageIO.read(new File("Images\\RedLaserQuestion.JPG"));
             
-            button2 = new JButton(new ImageIcon(greenMirror));
-            button2.setBorder(BorderFactory.createEmptyBorder());
-            button2.setContentAreaFilled(false);
-            button2.setBounds(550,50,175,175);
-            button2.setBorder(BorderFactory.createEmptyBorder());
-            button2.setContentAreaFilled(false);
-            panel.add(button2);
+            purpleButton = new JButton(new ImageIcon(purpleMirror));
+            purpleButton.setBorder(BorderFactory.createEmptyBorder());
+            purpleButton.setContentAreaFilled(false);
+            purpleButton.setBounds(70,360,90,90);
+            purpleButton.setBorder(BorderFactory.createEmptyBorder());
+            purpleButton.setContentAreaFilled(false); 
+            panel.add(purpleButton);
+            
+            greenButton = new JButton(new ImageIcon(greenMirror));
+            greenButton.setBorder(BorderFactory.createEmptyBorder());
+            greenButton.setContentAreaFilled(false);
+            greenButton.setBounds(550,50,175,175);
+            greenButton.setBorder(BorderFactory.createEmptyBorder());
+            greenButton.setContentAreaFilled(false);
+            //panel.add(greenButton);
+            
+            redButton = new JButton(new ImageIcon(laserQuestionMark));
+            redButton.setBorder(BorderFactory.createEmptyBorder());
+            redButton.setContentAreaFilled(false);
+            redButton.setBounds(70,455,90,90);
+            redButton.setBorder(BorderFactory.createEmptyBorder());
+            redButton.setContentAreaFilled(false);
+            panel.add(redButton);
         }
         catch(Exception e){}
-
         panel.add(fireButton);
         frame.pack();
         frame.setVisible(true);
@@ -75,7 +85,6 @@ class LaserMazeBoardPanel extends JPanel implements MouseListener {
 
     public void paintComponent(Graphics g) {
         g.drawImage(board, 0, 0, null);
-        g.drawImage(purpleMirror,100,100,null);
     }
 
 }
