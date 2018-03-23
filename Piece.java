@@ -1,4 +1,4 @@
-package OopProject4Lim2018;
+ 
 
 
 /**
@@ -24,7 +24,11 @@ public abstract class Piece
     /**
      * Changes orientation to make the piece be rotated one clockwise. If orient is unknown it will 
      */
-    public void rotate(){
+    public boolean rotate(){
+        if (!this.isRotatable) {
+            return false;
+        }
+        
         if (orient == Orientation.UP) {
             orient = Orientation.RIGHT;
         }
@@ -37,6 +41,7 @@ public abstract class Piece
         else if (orient == Orientation.UNKNOWN || orient == Orientation.LEFT) {
             orient = Orientation.UP;
         }
+        return true;
     }
     
     public void hitPiece() {
