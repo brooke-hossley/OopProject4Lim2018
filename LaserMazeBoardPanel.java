@@ -41,28 +41,38 @@ class LaserMazeBoardPanel extends JPanel implements MouseListener {
         {
             //card 1 mirror adding
             purpleMirror = ImageIO.read(new File("PurpleMirror.JPG"));
-            greenMirror = ImageIO.read(new File("GreenMirror.JPG"));
+            //System.out.println("found purple");
+            String s = "." + File.separator + "Images" + File.separator + "GreenQuestionMark.JPG";
+            //System.out.println(s);
+            greenMirror = ImageIO.read(new File(s).getAbsoluteFile());
+            //System.out.println("found green");
             laserQuestionMark = ImageIO.read(new File("Images\\RedLaserQuestion.JPG"));
+            //System.out.println("found red");
             
             purpleButton = new JButton(new ImageIcon(purpleMirror));
             purpleButton.setBorder(BorderFactory.createEmptyBorder());
             purpleButton.setContentAreaFilled(false);
             purpleButton.setBounds(70,360,90,90);
             panel.add(purpleButton);
+            //System.out.println("added purple");
             
             greenButton = new JButton(new ImageIcon(greenMirror));
             greenButton.setBorder(BorderFactory.createEmptyBorder());
             greenButton.setContentAreaFilled(false);
             greenButton.setBounds(550,50,175,175);
-            //panel.add(greenButton);
+            panel.add(greenButton);
+            //System.out.println("added green");
             
             redButton = new JButton(new ImageIcon(laserQuestionMark));
             redButton.setBorder(BorderFactory.createEmptyBorder());
             redButton.setContentAreaFilled(false);
             redButton.setBounds(70,455,90,90);
             panel.add(redButton);
+            //System.out.println("added red");
         }
-        catch(Exception e){}
+        catch(IOException e){
+            //System.out.println("Catch block");
+        }
         frame.pack();
         frame.setVisible(true);
     }
