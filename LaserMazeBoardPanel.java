@@ -6,7 +6,7 @@ import java.io.*;
 import javax.imageio.*;
 class LaserMazeBoardPanel extends JPanel implements MouseListener {
     private Image board;
-    
+    private static JLabel pic1, pic2, pic3;
     public LaserMazeBoardPanel(String board) {
         this(new ImageIcon(board).getImage());
     }
@@ -25,9 +25,9 @@ class LaserMazeBoardPanel extends JPanel implements MouseListener {
     public static void main(String[] args) {
         JFrame.setDefaultLookAndFeelDecorated(true);
         JFrame frame = new JFrame();
-        LaserMazeBoardPanel panel = new LaserMazeBoardPanel(new ImageIcon("Board.png").getImage());
+        LaserMazeBoardPanel panel = new LaserMazeBoardPanel(new ImageIcon("Images\\Board.png").getImage());
         frame.getContentPane().add(panel);
-        frame.setTitle("Lase Maze");
+        frame.setTitle("Laser Maze");
         CircleButton fireButton = new CircleButton("FIRE");
         fireButton.setBounds(595,490,100,100);
         panel.add(fireButton);
@@ -35,44 +35,27 @@ class LaserMazeBoardPanel extends JPanel implements MouseListener {
         BufferedImage greenMirror;
         BufferedImage laserQuestionMark;
         JButton purpleButton;
-        JButton greenButton;
         JButton redButton;
         try
         {
-            //card 1 mirror adding
-            purpleMirror = ImageIO.read(new File("PurpleMirror.JPG"));
-            //System.out.println("found purple");
-            String s = "." + File.separator + "Images" + File.separator + "GreenQuestionMark.JPG";
-            //System.out.println(s);
-            greenMirror = ImageIO.read(new File(s).getAbsoluteFile());
-            //System.out.println("found green");
-            laserQuestionMark = ImageIO.read(new File("Images\\RedLaserQuestion.JPG"));
-            //System.out.println("found red");
-            
+            purpleMirror = ImageIO.read(new File("Images\\PurpleMirrorLeft.JPG"));
             purpleButton = new JButton(new ImageIcon(purpleMirror));
             purpleButton.setBorder(BorderFactory.createEmptyBorder());
             purpleButton.setContentAreaFilled(false);
-            purpleButton.setBounds(70,360,90,90);
+            purpleButton.setBounds(55,350,90,90);
             panel.add(purpleButton);
-            //System.out.println("added purple");
-            
-            greenButton = new JButton(new ImageIcon(greenMirror));
-            greenButton.setBorder(BorderFactory.createEmptyBorder());
-            greenButton.setContentAreaFilled(false);
-            greenButton.setBounds(550,50,175,175);
-            panel.add(greenButton);
-            //System.out.println("added green");
-            
+
+            laserQuestionMark = ImageIO.read(new File("Images\\RedLaserQuestion.JPG"));
             redButton = new JButton(new ImageIcon(laserQuestionMark));
             redButton.setBorder(BorderFactory.createEmptyBorder());
             redButton.setContentAreaFilled(false);
             redButton.setBounds(70,455,90,90);
             panel.add(redButton);
-            //System.out.println("added red");
         }
-        catch(IOException e){
-            //System.out.println("Catch block");
+        catch(Exception e){
+            System.out.println("File not found");
         }
+
         frame.pack();
         frame.setVisible(true);
     }
