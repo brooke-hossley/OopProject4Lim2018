@@ -1,4 +1,4 @@
-package OopProject4Lim2018;
+ 
 /**
  * Abstract class RedPiece - write a description of the class here
  *

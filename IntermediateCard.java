@@ -7,7 +7,11 @@ import java.util.ArrayList;
  */
 public class IntermediateCard
 {
+    //2d array of pieces
     protected Piece theBoard[][];
+    //list of the pieces in the beginning that will need to be added 
+    protected Piece startPiecesToAdd[];
+    //updated list of pieces left to add
     protected ArrayList<Piece> piecesToAdd;
     /**
      * Constructor for objects of class CardOne
@@ -18,14 +22,24 @@ public class IntermediateCard
         theBoard[0][3] = new PurplePiece(Orientation.UNKNOWN, true, false, true);
         theBoard[3][3] = new PurplePiece(Orientation.RIGHT, false, false, true);
         theBoard[1][1] = new RedPiece(Orientation.UNKNOWN, true);
+        
         piecesToAdd = new ArrayList<Piece>();
-        piecesToAdd.add(new PurplePiece(Orientation.UNKNOWN, true, true, false));
-        piecesToAdd.add(new PurplePiece(Orientation.UNKNOWN, true, true, false));
+        piecesToAdd.add(new PurplePiece());
+        piecesToAdd.add(new PurplePiece());
         piecesToAdd.add(new GreenPiece());
+        
+        startPiecesToAdd = new Piece[3];
+        startPiecesToAdd[0]=piecesToAdd.get(0);
+        startPiecesToAdd[1]=piecesToAdd.get(1);
+        startPiecesToAdd[2]=piecesToAdd.get(2);
     }
 
-    public void addPiece(int row, int col, int indexOfArrayList) {
+    public boolean addPiece(int row, int col, int indexOfArrayList) {
+        //if (piecesToAdd.size()-1 < indexOfArrayList) {
+        //    return false;
+        //}
         theBoard[row][col] = piecesToAdd.get(indexOfArrayList);
+        return true;
     }
 
     public boolean movePiece(int startRow, int startCol, int endRow, int endCol){
@@ -63,12 +77,16 @@ public class IntermediateCard
         System.out.println("Starter board is valid solution: " + b1.isValidSolution());
         //Adding the first purple piece to [0][0]
         b1.addPiece(0, 0, 0);
-        //Move the purple piece to correct spot
-        b1.movePiece(0,0,1,4);
         //Adding the second purple piece to [3][4]
         b1.addPiece(3, 4, 1);
+        System.out.println("Added to wrong spot and not all in board: " + b1.isValidSolution());
         //Adding the green piece to [1][3]
         b1.addPiece(1, 3, 2);
+        //print with all in board, one in wrong spot
+        System.out.println("Added to wrong spot but all in board: " + b1.isValidSolution());
+        //Move the purple piece to correct spot
+        b1.movePiece(0,0,1,4);
+        
         System.out.println("Added all pieces to correct spot, but wrong orientation: " + b1.isValidSolution());
         //Rotating the Laser
         b1.rotatePiece(1, 1);

@@ -1,4 +1,4 @@
-package OopProject4Lim2018;
+ 
 /**
  * Write a description of class CardOne here.
  *
