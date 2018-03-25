@@ -42,7 +42,8 @@ public class BeginnerCard
             return false;
         }
         else {
-            theBoard[row][col].rotate();
+            Piece p = theBoard[row][col];
+            p.rotate();
             return true;
         }
     }
