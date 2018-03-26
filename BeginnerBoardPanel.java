@@ -5,8 +5,7 @@ import java.awt.image.*;
 import java.io.*;
 import javax.imageio.*;
 import java.awt.geom.Line2D;
-
-///////////////////////////////////////////////////////////////////////////////////// 
+////////////////////////////////////////////////////////////////////////////////
 /**
  * Creates the board with draggable images and rotable mirrors.
  *
@@ -15,6 +14,7 @@ import java.awt.geom.Line2D;
  */
 public class BeginnerBoardPanel extends JPanel implements MouseListener, MouseMotionListener , ActionListener
 {
+    private BoardLocations locations;
     // position of the movable purple mirror
     private int x, y;
 
@@ -41,6 +41,7 @@ public class BeginnerBoardPanel extends JPanel implements MouseListener, MouseMo
     private CircleButton fireButton;
     private boolean draw = false;
     public BeginnerBoardPanel() {
+        locations = new BoardLocations();
         //set images we start with on board
         board = new ImageIcon("Images\\Board.PNG").getImage();
         redQuestionMark = new ImageIcon("Images\\RedLaserQuestion.JPG").getImage();
@@ -116,7 +117,7 @@ public class BeginnerBoardPanel extends JPanel implements MouseListener, MouseMo
     @Override
     public void actionPerformed(ActionEvent e) 
     {
-    //this is what gets called when the fire button is pressed
+        //this is what gets called when the fire button is pressed
         draw = true;
         repaint();
     }
@@ -126,6 +127,7 @@ public class BeginnerBoardPanel extends JPanel implements MouseListener, MouseMo
         //if clicked on laser rotate it
         if (e.getX() >= 65 && e.getX() <= 65 + MIRROR_SIZE &&
         e.getY() >= 452 && e.getY() <= 452 + MIRROR_SIZE) {
+
             if (ourLaser == redQuestionMark || ourLaser == redLasers[3]) {
                 ourLaser = redLasers[0];
                 redIndex = 0;
@@ -141,7 +143,9 @@ public class BeginnerBoardPanel extends JPanel implements MouseListener, MouseMo
         //if clicked on movable mirror rotate it
         else if (e.getX() >= x && e.getX() <= x + MIRROR_SIZE &&
         e.getY() >= y && e.getY() <= y + MIRROR_SIZE) {
-            if (ourMovablePurple == purpleQuestionMark || ourMovablePurple == purpleMirrors[3]) {
+            
+            if (ourMovablePurple == purpleQuestionMark || 
+            ourMovablePurple == purpleMirrors[3]) {
                 ourMovablePurple = purpleMirrors[0];
                 purpleIndex = 0;
                 repaint();
@@ -160,7 +164,25 @@ public class BeginnerBoardPanel extends JPanel implements MouseListener, MouseMo
 
     public void mouseMoved(MouseEvent e) {}
 
-    public void mouseReleased(MouseEvent e) {}
+    public void mouseReleased(MouseEvent e) {
+        if (dragging) {
+            //find drop location for where mouse was released
+            Point drop = locations.getDropPoint(e.getX(), e.getY());
+            
+            //if within board
+            if (drop != null) {
+                x = drop.x;
+                y = drop.y;
+            }
+            //if not within board put on side panel
+            else {
+                x = 602;
+                y = 75;
+            }
+            repaint();
+        
+        }
+    }
 
     /** 
      * determine if the mouse was pressed in the bounds of
@@ -176,10 +198,6 @@ public class BeginnerBoardPanel extends JPanel implements MouseListener, MouseMo
     }
 
     public void mouseDragged(MouseEvent e) {
-
-        //Since x and y are reset here
-        //Will need to add functionality for making sure mirror goes into actual board spot
-
         if (dragging) {
             x = e.getX() - xOffset;
             y = e.getY() - yOffset;
