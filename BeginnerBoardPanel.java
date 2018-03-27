@@ -14,7 +14,10 @@ import java.awt.geom.Line2D;
  */
 public class BeginnerBoardPanel extends JPanel implements MouseListener, MouseMotionListener , ActionListener
 {
+    //used to drag to correct spot
     private BoardLocations locations;
+    private Point mirrorPoints[], sidePanel;
+    
     // position of the movable purple mirror
     private int x, y;
 
@@ -40,8 +43,16 @@ public class BeginnerBoardPanel extends JPanel implements MouseListener, MouseMo
 
     private CircleButton fireButton;
     private boolean draw = false;
+    
     public BeginnerBoardPanel() {
         locations = new BoardLocations();
+        sidePanel = new Point(602, 75);
+        mirrorPoints = new Point[4];
+        mirrorPoints[0] = locations.locationPoints[4][0];
+        mirrorPoints[1] = locations.locationPoints[0][3];
+        mirrorPoints[2] = locations.locationPoints[0][4];
+        mirrorPoints[3] = sidePanel;
+        
         //set images we start with on board
         board = new ImageIcon("Images\\Board.PNG").getImage();
         redQuestionMark = new ImageIcon("Images\\RedLaserQuestion.JPG").getImage();
@@ -49,9 +60,6 @@ public class BeginnerBoardPanel extends JPanel implements MouseListener, MouseMo
         purpleQuestionMark = new ImageIcon("Images\\PurpleQuestionMark.JPG").getImage();
         ourLaser = redQuestionMark;
         ourMovablePurple = purpleQuestionMark;
-        //these don't really matter yet
-        redIndex = 0;
-        purpleIndex = 0;
 
         // initial position of our movable mirror
         x = 602;
@@ -105,12 +113,12 @@ public class BeginnerBoardPanel extends JPanel implements MouseListener, MouseMo
         g.drawImage(ourMovablePurple, x, y, null);
 
         if (draw) {
-            g.setColor(Color.BLUE);
+            g.setColor(Color.RED);
             Graphics2D g2 = (Graphics2D) g;
             g2.setStroke(new BasicStroke(10));
-            g.drawLine(100,455,100,410);
-            g.drawLine(100,410,480,410);
-            g.drawLine(480,410,480,130);
+            g.drawLine(105,452,105,400);
+            g.drawLine(105,400,480,400);
+            g.drawLine(486,400,486,138);
         }
     }
 
@@ -118,7 +126,8 @@ public class BeginnerBoardPanel extends JPanel implements MouseListener, MouseMo
     public void actionPerformed(ActionEvent e) 
     {
         //this is what gets called when the fire button is pressed
-        draw = true;
+        draw = (mirrorPoints[3] == locations.locationPoints[4][3] && 
+        ourLaser == redLasers[0] && ourMovablePurple == purpleMirrors[1]);
         repaint();
     }
 
@@ -169,18 +178,28 @@ public class BeginnerBoardPanel extends JPanel implements MouseListener, MouseMo
             //find drop location for where mouse was released
             Point drop = locations.getDropPoint(e.getX(), e.getY());
             
-            //if within board
-            if (drop != null) {
-                x = drop.x;
-                y = drop.y;
-            }
             //if not within board put on side panel
-            else {
+            if (drop == null) {
                 x = 602;
                 y = 75;
+                mirrorPoints[3] = sidePanel;
             }
+            
+            //if within board and not over another piece, place it
+            else if (drop != mirrorPoints[0] && drop != mirrorPoints[1] && 
+            drop != mirrorPoints[2]) {
+                x = drop.x;
+                y = drop.y;
+                mirrorPoints[3] = drop;
+            }
+            
+            //if over another piece leave it where it came from
+            else {
+                x = mirrorPoints[3].x;
+                y = mirrorPoints[3].y;
+            }
+            
             repaint();
-        
         }
     }
 
@@ -191,6 +210,7 @@ public class BeginnerBoardPanel extends JPanel implements MouseListener, MouseMo
      * @param e mouse event information
      */
     public void mousePressed(MouseEvent e) {
+        draw = false;
         dragging = (e.getX() >= x && e.getX() <= x + MIRROR_SIZE &&
             e.getY() >= y && e.getY() <= y + MIRROR_SIZE);
         xOffset = e.getX() - x;

@@ -8,7 +8,7 @@ import java.awt.Point;
 public class BoardLocations
 {
     // points represent pixel location of top left corner for each of the 25 board positions
-    private Point[][] locationPoints;
+    protected Point[][] locationPoints;
     
     int[] xPoints = {65, 161, 256, 352, 448};
     int[] yPoints = {69, 165, 260, 356, 452};
