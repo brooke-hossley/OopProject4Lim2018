@@ -55,12 +55,13 @@ public class IntermediateBoardPanel extends JPanel implements MouseListener, Mou
         mirrorPoints[3] = sidePanel;
 
         //set images we start with on board
-        board = new ImageIcon("Board.PNG").getImage();
-        redQuestionMark = new ImageIcon("RedLaserQuestion.JPG").getImage();
-        purpleMirrorTarget = new ImageIcon("PurpleMirrorWithTargetRight.JPG").getImage();
-        purpleQuestionMark = new ImageIcon("PurpleQuestionMark.JPG").getImage();
-        greenQuestionMark = new ImageIcon("greenQuestionMark.JPG").getImage();
-        purpleWithRedQuestionMark = new ImageIcon("purpleWithRedQuestion.JPG").getImage();
+        String dir = "Images\\";
+        board = new ImageIcon(dir + "Board.PNG").getImage();
+        redQuestionMark = new ImageIcon(dir + "RedLaserQuestion.JPG").getImage();
+        purpleMirrorTarget = new ImageIcon(dir + "PurpleMirrorWithTargetRight.JPG").getImage();
+        purpleQuestionMark = new ImageIcon(dir + "PurpleQuestionMark.JPG").getImage();
+        greenQuestionMark = new ImageIcon(dir + "greenQuestionMark.JPG").getImage();
+        purpleWithRedQuestionMark = new ImageIcon(dir + "purpleWithRedQuestion.JPG").getImage();
 
         ourLaser = redQuestionMark;
         ourMoveablePurple = purpleQuestionMark;
@@ -86,32 +87,32 @@ public class IntermediateBoardPanel extends JPanel implements MouseListener, Mou
 
         //load in purple and red piece images for rotation later
         purpleMirrors = new Image[4];
-        purpleMirrors[0] = new ImageIcon("PurpleMirrorUp.JPG").getImage();
-        purpleMirrors[1] = new ImageIcon("PurpleMirrorRight.JPG").getImage();
-        purpleMirrors[2] = new ImageIcon("PurpleMirrorDown.JPG").getImage();
-        purpleMirrors[3] = new ImageIcon("PurpleMirrorLeft.JPG").getImage();
+        purpleMirrors[0] = new ImageIcon(dir + "PurpleMirrorUp.JPG").getImage();
+        purpleMirrors[1] = new ImageIcon(dir + "PurpleMirrorRight.JPG").getImage();
+        purpleMirrors[2] = new ImageIcon(dir + "PurpleMirrorDown.JPG").getImage();
+        purpleMirrors[3] = new ImageIcon(dir + "PurpleMirrorLeft.JPG").getImage();
 
         purpleMirrors2 = new Image[4];
-        purpleMirrors2[0] = new ImageIcon("PurpleMirrorUp.JPG").getImage();
-        purpleMirrors2[1] = new ImageIcon("PurpleMirrorRight.JPG").getImage();
-        purpleMirrors2[2] = new ImageIcon("PurpleMirrorDown.JPG").getImage();
-        purpleMirrors2[3] = new ImageIcon("PurpleMirrorLeft.JPG").getImage();
+        purpleMirrors2[0] = new ImageIcon(dir + "PurpleMirrorUp.JPG").getImage();
+        purpleMirrors2[1] = new ImageIcon(dir + "PurpleMirrorRight.JPG").getImage();
+        purpleMirrors2[2] = new ImageIcon(dir + "PurpleMirrorDown.JPG").getImage();
+        purpleMirrors2[3] = new ImageIcon(dir + "PurpleMirrorLeft.JPG").getImage();
 
         purpleMirrorsWithTarget = new Image[4];
-        purpleMirrorsWithTarget[0] = new ImageIcon("PurpleMirrorWithTargetUp.JPG").getImage();
-        purpleMirrorsWithTarget[1] = new ImageIcon("PurpleMirrorWithTargetRight.JPG").getImage();
-        purpleMirrorsWithTarget[2] = new ImageIcon("PurpleMirrorWithTargetDown.JPG").getImage();
-        purpleMirrorsWithTarget[3] = new ImageIcon("PurpleMirrorWithTargetLeft.JPG").getImage();
+        purpleMirrorsWithTarget[0] = new ImageIcon(dir + "PurpleMirrorWithTargetUp.JPG").getImage();
+        purpleMirrorsWithTarget[1] = new ImageIcon(dir + "PurpleMirrorWithTargetRight.JPG").getImage();
+        purpleMirrorsWithTarget[2] = new ImageIcon(dir + "PurpleMirrorWithTargetDown.JPG").getImage();
+        purpleMirrorsWithTarget[3] = new ImageIcon(dir + "PurpleMirrorWithTargetLeft.JPG").getImage();
 
         redLasers = new Image[4];
-        redLasers[0] = new ImageIcon("LaserUp.JPG").getImage();
-        redLasers[1] = new ImageIcon("LaserRight.JPG").getImage();
-        redLasers[2] = new ImageIcon("LaserDown.JPG").getImage();
-        redLasers[3] = new ImageIcon("LaserLeft.JPG").getImage();
+        redLasers[0] = new ImageIcon(dir + "LaserUp.JPG").getImage();
+        redLasers[1] = new ImageIcon(dir + "LaserRight.JPG").getImage();
+        redLasers[2] = new ImageIcon(dir + "LaserDown.JPG").getImage();
+        redLasers[3] = new ImageIcon(dir + "LaserLeft.JPG").getImage();
 
         greenMirrors = new Image[2];
-        greenMirrors[0] = new ImageIcon("GreenMirror.PNG").getImage();
-        greenMirrors[1] = new ImageIcon("GreenMirrorRotated.PNG").getImage();
+        greenMirrors[0] = new ImageIcon(dir + "GreenMirrorA.JPG").getImage();
+        greenMirrors[1] = new ImageIcon(dir + "GreenMirrorB.JPG").getImage();
         
 
         //set window to correct size

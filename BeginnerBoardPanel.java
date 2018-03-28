@@ -54,10 +54,11 @@ public class BeginnerBoardPanel extends JPanel implements MouseListener, MouseMo
         mirrorPoints[3] = sidePanel;
         
         //set images we start with on board
-        board = new ImageIcon("Images\\Board.PNG").getImage();
-        redQuestionMark = new ImageIcon("Images\\RedLaserQuestion.JPG").getImage();
-        purpleMirrorTarget = new ImageIcon("Images\\PurpleMirrorWithTargetDown.JPG").getImage();
-        purpleQuestionMark = new ImageIcon("Images\\PurpleQuestionMark.JPG").getImage();
+        String dir = "Images\\";
+        board = new ImageIcon("Board.PNG").getImage();
+        redQuestionMark = new ImageIcon(dir + "RedLaserQuestion.JPG").getImage();
+        purpleMirrorTarget = new ImageIcon(dir + "PurpleMirrorWithTargetDown.JPG").getImage();
+        purpleQuestionMark = new ImageIcon(dir + "PurpleQuestionMark.JPG").getImage();
         ourLaser = redQuestionMark;
         ourMovablePurple = purpleQuestionMark;
 
@@ -67,16 +68,16 @@ public class BeginnerBoardPanel extends JPanel implements MouseListener, MouseMo
 
         //load in purple and red piece images for rotation later
         purpleMirrors = new Image[4];
-        purpleMirrors[0] = new ImageIcon("Images\\PurpleMirrorUp.JPG").getImage();
-        purpleMirrors[1] = new ImageIcon("Images\\PurpleMirrorRight.JPG").getImage();
-        purpleMirrors[2] = new ImageIcon("Images\\PurpleMirrorDown.JPG").getImage();
-        purpleMirrors[3] = new ImageIcon("Images\\PurpleMirrorLeft.JPG").getImage();
+        purpleMirrors[0] = new ImageIcon(dir + "PurpleMirrorUp.JPG").getImage();
+        purpleMirrors[1] = new ImageIcon(dir + "PurpleMirrorRight.JPG").getImage();
+        purpleMirrors[2] = new ImageIcon(dir + "PurpleMirrorDown.JPG").getImage();
+        purpleMirrors[3] = new ImageIcon(dir + "PurpleMirrorLeft.JPG").getImage();
         
         redLasers = new Image[4];
-        redLasers[0] = new ImageIcon("Images\\LaserUp.JPG").getImage();
-        redLasers[1] = new ImageIcon("Images\\LaserRight.JPG").getImage();
-        redLasers[2] = new ImageIcon("Images\\LaserDown.JPG").getImage();
-        redLasers[3] = new ImageIcon("Images\\LaserLeft.JPG").getImage();
+        redLasers[0] = new ImageIcon(dir + "LaserUp.JPG").getImage();
+        redLasers[1] = new ImageIcon(dir + "LaserRight.JPG").getImage();
+        redLasers[2] = new ImageIcon(dir + "LaserDown.JPG").getImage();
+        redLasers[3] = new ImageIcon(dir + "LaserLeft.JPG").getImage();
         
         //set window to correct size
         Dimension size = new Dimension(board.getWidth(null), board.getHeight(null));
