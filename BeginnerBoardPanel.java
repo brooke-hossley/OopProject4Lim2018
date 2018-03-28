@@ -55,7 +55,7 @@ public class BeginnerBoardPanel extends JPanel implements MouseListener, MouseMo
         
         //set images we start with on board
         String dir = "Images\\";
-        board = new ImageIcon("Board.PNG").getImage();
+        board = new ImageIcon(dir + "Board.PNG").getImage();
         redQuestionMark = new ImageIcon(dir + "RedLaserQuestion.JPG").getImage();
         purpleMirrorTarget = new ImageIcon(dir + "PurpleMirrorWithTargetDown.JPG").getImage();
         purpleQuestionMark = new ImageIcon(dir + "PurpleQuestionMark.JPG").getImage();
