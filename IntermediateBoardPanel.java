@@ -16,13 +16,14 @@ public class IntermediateBoardPanel extends JPanel implements MouseListener, Mou
 {
     //used to drag to correct spot
     private BoardLocations locations;
-    private Point mirrorPoints[], sidePanel;
+    private Point[] mirrorPoints;
+    private Point[] sidePanel = {new Point(602, 75), new Point(602, 170), new Point(602, 265)};
 
-    // position of the movable purple mirror
-    private int x, y , x2,y2,x3,y3,x4,y4;
+    // position of the movable mirrors
+    private int x1, y1, x2, y2, x3, y3;
 
-    // am I currently dragging the movable mirror? 
-    private boolean dragging;
+    // am I currently dragging a movable mirror? 
+    private boolean dragging1, dragging2, dragging3;
 
     // remember mouse "grab point" in the movable mirror 
     private int xOffset, yOffset;
@@ -32,28 +33,29 @@ public class IntermediateBoardPanel extends JPanel implements MouseListener, Mou
 
     //all the images we're going to use
     private static Image board;
-    private Image[] redLasers,  purpleMirrors,purpleMirrors2, purpleMirrorsWithTarget, greenMirrors;
+    private Image[] redLasers,  purpleMirrors, purpleMirrorsWithTarget, greenMirrors;
     private Image redQuestionMark, purpleMirrorTarget; 
     private Image purpleQuestionMark, purpleQuestionMark2, greenQuestionMark, purpleWithRedQuestionMark;
 
     //what the current image being used by game is for laser and moveable mirror
-    private Image ourLaser, ourMoveablePurple, ourMoveablePurple2, ourPurpleWithTarget, ourMoveableGreen;
+    private Image ourLaser, ourMoveablePurple1, ourMoveablePurple2, ourPurpleWithTarget, ourMoveableGreen;
 
     //array index ourLaser and ourMovablePurple currently are
-    private int redIndex, purpleIndex,purpleIndex2 ,greenIndex, purpleWithTargetIndex;
+    private int redIndex, purpleIndex, purpleIndex2 ,greenIndex, purpleWithTargetIndex;
 
     private CircleButton fireButton;
-    private boolean draw = false;
+    private boolean correctSolution, fire;
 
     public IntermediateBoardPanel() {
         locations = new BoardLocations();
-        sidePanel = new Point(602, 75);
-        mirrorPoints = new Point[4];
-        mirrorPoints[0] = locations.locationPoints[4][0];
-        mirrorPoints[1] = locations.locationPoints[0][3];
-        mirrorPoints[2] = locations.locationPoints[0][4];
-        mirrorPoints[3] = sidePanel;
-
+        mirrorPoints = new Point[6];
+        mirrorPoints[0] = locations.locationPoints[3][0];
+        mirrorPoints[1] = locations.locationPoints[1][1];
+        mirrorPoints[2] = locations.locationPoints[3][3];
+        mirrorPoints[3] = sidePanel[0];
+        mirrorPoints[4] = sidePanel[1];
+        mirrorPoints[5] = sidePanel[2];
+        
         //set images we start with on board
         String dir = "Images\\";
         board = new ImageIcon(dir + "Board.PNG").getImage();
@@ -64,39 +66,30 @@ public class IntermediateBoardPanel extends JPanel implements MouseListener, Mou
         purpleWithRedQuestionMark = new ImageIcon(dir + "purpleWithRedQuestion.JPG").getImage();
 
         ourLaser = redQuestionMark;
-        ourMoveablePurple = purpleQuestionMark;
+        ourMoveablePurple1 = purpleQuestionMark;
         ourMoveablePurple2 = purpleQuestionMark;
         ourPurpleWithTarget = purpleWithRedQuestionMark;
         ourMoveableGreen = greenQuestionMark;
-        // initial position of our movable mirror
+        
+        // initial position of our movable mirrors 
         //first purple mirror
-        x = 602;
-        y = 75;
+        x1 = sidePanel[0].x;
+        y1 = sidePanel[0].y;
 
         //second purple mirror
-        x2 = 602;
-        y2 = 170;
+        x2 = sidePanel[1].x;
+        y2 = sidePanel[1].y;
 
         //green mirror
-        x3 = 602;
-        y3 = 265;
+        x3 = sidePanel[2].x;
+        y3 = sidePanel[2].y;
         
-        //purple with target
-        x4 = 350;
-        y4 = 70;
-
         //load in purple and red piece images for rotation later
         purpleMirrors = new Image[4];
         purpleMirrors[0] = new ImageIcon(dir + "PurpleMirrorUp.JPG").getImage();
         purpleMirrors[1] = new ImageIcon(dir + "PurpleMirrorRight.JPG").getImage();
         purpleMirrors[2] = new ImageIcon(dir + "PurpleMirrorDown.JPG").getImage();
         purpleMirrors[3] = new ImageIcon(dir + "PurpleMirrorLeft.JPG").getImage();
-
-        purpleMirrors2 = new Image[4];
-        purpleMirrors2[0] = new ImageIcon(dir + "PurpleMirrorUp.JPG").getImage();
-        purpleMirrors2[1] = new ImageIcon(dir + "PurpleMirrorRight.JPG").getImage();
-        purpleMirrors2[2] = new ImageIcon(dir + "PurpleMirrorDown.JPG").getImage();
-        purpleMirrors2[3] = new ImageIcon(dir + "PurpleMirrorLeft.JPG").getImage();
 
         purpleMirrorsWithTarget = new Image[4];
         purpleMirrorsWithTarget[0] = new ImageIcon(dir + "PurpleMirrorWithTargetUp.JPG").getImage();
@@ -133,7 +126,7 @@ public class IntermediateBoardPanel extends JPanel implements MouseListener, Mou
     }
 
     /**
-     * THE REALLY IMPORTANT METHOD which decides where to draw stuff
+     * THE REALLY IMPORTANT METHOD which decides where to correctSolution stuff
      * Applet's paint method to manage our graphics
      * 
      * @param g the Graphics reference
@@ -142,20 +135,25 @@ public class IntermediateBoardPanel extends JPanel implements MouseListener, Mou
         super.paintComponent(g);
         //these will stay same because hardcoded
         g.drawImage(board, 0, 0, null);
-        g.drawImage(purpleMirrorsWithTarget[1], 355, 360, null);
+        g.drawImage(purpleMirrorsWithTarget[1], 352, 356, null);
 
         //these can  rotate and moveables can be dragged
-        g.drawImage(ourLaser, 165, 170, null);
-        g.drawImage(ourMoveablePurple, x, y, null);
+        g.drawImage(ourLaser, 161, 165, null);
+        g.drawImage(ourMoveablePurple1, x1, y1, null);
         g.drawImage(ourMoveablePurple2, x2, y2, null);
         g.drawImage(ourMoveableGreen, x3, y3, null);
-        g.drawImage(ourPurpleWithTarget , x4,y4,null);
+        g.drawImage(ourPurpleWithTarget, 352, 69, null);
 
-        if (draw) {
-            g.setColor(Color.RED);
-            Graphics2D g2 = (Graphics2D) g;
-            g2.setStroke(new BasicStroke(10));
-
+        if (fire) {
+            if (correctSolution) {
+                g.setColor(Color.RED);
+                Graphics2D g2 = (Graphics2D) g;
+                g2.setStroke(new BasicStroke(10));
+                g.drawLine(245,205,490,205);
+                g.drawLine(390,205,390,141);
+                g.drawLine(490,205,490,396);
+                g.drawLine(490,396,420,396);
+            }
         }
     }
 
@@ -163,9 +161,21 @@ public class IntermediateBoardPanel extends JPanel implements MouseListener, Mou
     public void actionPerformed(ActionEvent e) 
     {
         //this is what gets called when the fire button is pressed
-        //draw = (mirrorPoints[3] == locations.locationPoints[4][3] && 
-        //    ourLaser == redLasers[0] && ourMovablePurple == purpleMirrors[1]);
-        //repaint();
+        fire = true;
+        
+        //determine if board is correct positioning
+        correctSolution = (ourPurpleWithTarget == purpleMirrorsWithTarget[2] 
+        && ourLaser == redLasers[1] && ourMoveableGreen == greenMirrors[0] &&
+        mirrorPoints[5] == locations.locationPoints[3][1] 
+        && ((ourMoveablePurple1 == purpleMirrors[0] && mirrorPoints[3] == 
+        locations.locationPoints[4][1] && ourMoveablePurple2 == 
+        purpleMirrors[1] && mirrorPoints[4] == locations.locationPoints[4][3])
+        || (ourMoveablePurple2 == purpleMirrors[0] && mirrorPoints[4] == 
+        locations.locationPoints[4][1] && ourMoveablePurple1 == 
+        purpleMirrors[1] && mirrorPoints[3] == 
+        locations.locationPoints[4][3])));
+        
+        repaint();
     }
 
     public void mouseClicked(MouseEvent e) {
@@ -186,39 +196,41 @@ public class IntermediateBoardPanel extends JPanel implements MouseListener, Mou
             }
         }
 
-        //if clicked on movable mirror rotate it
-        else if (e.getX() >= x && e.getX() <= x + MIRROR_SIZE &&
-        e.getY() >= y && e.getY() <= y + MIRROR_SIZE) {
+        //if clicked on movable mirror1 rotate it
+        else if (e.getX() >= x1 && e.getX() <= x1 + MIRROR_SIZE &&
+        e.getY() >= y1 && e.getY() <= y1 + MIRROR_SIZE) {
 
-            if (ourMoveablePurple == purpleQuestionMark || 
-            ourMoveablePurple == purpleMirrors[3]) {
-                ourMoveablePurple = purpleMirrors[0];
+            if (ourMoveablePurple1 == purpleQuestionMark || 
+            ourMoveablePurple1 == purpleMirrors[3]) {
+                ourMoveablePurple1 = purpleMirrors[0];
                 purpleIndex = 0;
                 repaint();
             }
             else {
                 purpleIndex++; 
-                ourMoveablePurple = purpleMirrors[purpleIndex];
+                ourMoveablePurple1 = purpleMirrors[purpleIndex];
                 repaint();
             }
         }
 
+        //if clicked on movable mirror2 rotate it
         else if (e.getX() >= x2 && e.getX() <= x2 + MIRROR_SIZE &&
         e.getY() >= y2 && e.getY() <= y2 + MIRROR_SIZE) {
 
             if (ourMoveablePurple2 == purpleQuestionMark || 
-            ourMoveablePurple2 == purpleMirrors2[3]) {
-                ourMoveablePurple2 = purpleMirrors2[0];
+            purpleIndex2 == 3) {
+                ourMoveablePurple2 = purpleMirrors[0];
                 purpleIndex2 = 0;
                 repaint();
             }
             else {
                 purpleIndex2++; 
-                ourMoveablePurple2 = purpleMirrors2[purpleIndex2];
+                ourMoveablePurple2 = purpleMirrors[purpleIndex2];
                 repaint();
             }
         }
 
+        //if clicked on movable green mirror rotate it
         else if (e.getX() >= x3 && e.getX() <= x3 + MIRROR_SIZE &&
         e.getY() >= y3 && e.getY() <= y3 + MIRROR_SIZE) {
 
@@ -232,8 +244,10 @@ public class IntermediateBoardPanel extends JPanel implements MouseListener, Mou
                 repaint();
             }
         }
-        else if (e.getX() >= x4 && e.getX() <= x4 + MIRROR_SIZE &&
-        e.getY() >= y4 && e.getY() <= y4 + MIRROR_SIZE) {
+        
+        //if clicked on rotatable target mirror rotate it
+        else if (e.getX() >= 352 && e.getX() <= 352 + MIRROR_SIZE &&
+        e.getY() >= 69 && e.getY() <= 69 + MIRROR_SIZE) {
 
             if (ourPurpleWithTarget == purpleWithRedQuestionMark || 
             ourPurpleWithTarget == purpleMirrorsWithTarget[3]) {
@@ -256,29 +270,77 @@ public class IntermediateBoardPanel extends JPanel implements MouseListener, Mou
     public void mouseMoved(MouseEvent e) {}
 
     public void mouseReleased(MouseEvent e) {
-        if (dragging) {
+        if (dragging1) {
             //find drop location for where mouse was released
             Point drop = locations.getDropPoint(e.getX(), e.getY());
 
             //if not within board put on side panel
             if (drop == null) {
-                x = 602;
-                y = 75;
-                mirrorPoints[3] = sidePanel;
+                x1 = 602;
+                y1 = 75;
+                mirrorPoints[3] = sidePanel[0];
             }
-
             //if within board and not over another piece, place it
             else if (drop != mirrorPoints[0] && drop != mirrorPoints[1] && 
-            drop != mirrorPoints[2]) {
-                x = drop.x;
-                y = drop.y;
+            drop != mirrorPoints[2] && drop != mirrorPoints[4] && drop != mirrorPoints[5]) {
+                x1 = drop.x;
+                y1 = drop.y;
                 mirrorPoints[3] = drop;
             }
-
             //if over another piece leave it where it came from
             else {
-                x = mirrorPoints[3].x;
-                y = mirrorPoints[3].y;
+                x1 = mirrorPoints[3].x;
+                y1 = mirrorPoints[3].y;
+            }
+
+            repaint();
+        }
+        else if (dragging2) {
+            //find drop location for where mouse was released
+            Point drop = locations.getDropPoint(e.getX(), e.getY());
+
+            //if not within board put on side panel
+            if (drop == null) {
+                x2 =602;
+                y2 = 170;
+                mirrorPoints[4] = sidePanel[1];
+            }
+            //if within board and not over another piece, place it
+            else if (drop != mirrorPoints[0] && drop != mirrorPoints[1] && 
+            drop != mirrorPoints[2] && drop != mirrorPoints[3] && drop != mirrorPoints[5]) {
+                x2 = drop.x;
+                y2 = drop.y;
+                mirrorPoints[4] = drop;
+            }
+            //if over another piece leave it where it came from
+            else {
+                x2 = mirrorPoints[4].x;
+                y2 = mirrorPoints[4].y;
+            }
+
+            repaint();
+        }
+        else if (dragging3) {
+            //find drop location for where mouse was released
+            Point drop = locations.getDropPoint(e.getX(), e.getY());
+
+            //if not within board put on side panel
+            if (drop == null) {
+                x3 =602;
+                y3 = 265;
+                mirrorPoints[5] = sidePanel[2];
+            }
+            //if within board and not over another piece, place it
+            else if (drop != mirrorPoints[0] && drop != mirrorPoints[1] && 
+            drop != mirrorPoints[2] && drop != mirrorPoints[3] && drop != mirrorPoints[4]) {
+                x3 = drop.x;
+                y3 = drop.y;
+                mirrorPoints[5] = drop;
+            }
+            //if over another piece leave it where it came from
+            else {
+                x3 = mirrorPoints[5].x;
+                y3 = mirrorPoints[5].y;
             }
 
             repaint();
@@ -292,17 +354,41 @@ public class IntermediateBoardPanel extends JPanel implements MouseListener, Mou
      * @param e mouse event information
      */
     public void mousePressed(MouseEvent e) {
-        draw = false;
-        dragging = (e.getX() >= x && e.getX() <= x + MIRROR_SIZE &&
-            e.getY() >= y && e.getY() <= y + MIRROR_SIZE);
-        xOffset = e.getX() - x;
-        yOffset = e.getY() - y;
+        correctSolution = fire = false;
+        dragging1 = (e.getX() >= x1 && e.getX() <= x1 + MIRROR_SIZE &&
+                    e.getY() >= y1 && e.getY() <= y1 + MIRROR_SIZE);
+        if (dragging1) {
+            xOffset = e.getX() - x1;
+            yOffset = e.getY() - y1;
+        }
+        dragging2 = (e.getX() >= x2 && e.getX() <= x2 + MIRROR_SIZE &&
+                    e.getY() >= y2 && e.getY() <= y2 + MIRROR_SIZE);
+        if (dragging2) {
+            xOffset = e.getX() - x2;
+            yOffset = e.getY() - y2;
+        }
+        dragging3 = (e.getX() >= x3 && e.getX() <= x3 + MIRROR_SIZE &&
+                    e.getY() >= y3 && e.getY() <= y3 + MIRROR_SIZE);
+        if (dragging3) {
+            xOffset = e.getX() - x3;
+            yOffset = e.getY() - y3;
+        }
     }
 
     public void mouseDragged(MouseEvent e) {
-        if (dragging) {
-            x = e.getX() - xOffset;
-            y = e.getY() - yOffset;
+        if (dragging1) {
+            x1 = e.getX() - xOffset;
+            y1 = e.getY() - yOffset;
+            repaint();
+        }
+        if (dragging2) {
+            x2 = e.getX() - xOffset;
+            y2 = e.getY() - yOffset;
+            repaint();
+        }
+        if (dragging3) {
+            x3 = e.getX() - xOffset;
+            y3 = e.getY() - yOffset;
             repaint();
         }
     }
