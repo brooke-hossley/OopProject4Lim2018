@@ -5,6 +5,7 @@ import java.awt.image.*;
 import java.io.*;
 import javax.imageio.*;
 import java.awt.geom.Line2D;
+import javax.sound.sampled.*;
 ////////////////////////////////////////////////////////////////////////////////
 /**
  * Creates the board with draggable images and rotable mirrors.
@@ -14,7 +15,7 @@ import java.awt.geom.Line2D;
  * @version Spring 2018
  */
 public class BeginnerBoardPanel extends JPanel implements 
-MouseListener, MouseMotionListener , ActionListener
+MouseListener, MouseMotionListener, ActionListener
 {
     //Used to drag mirrors to correct spot
     private BoardLocations locations;
@@ -42,9 +43,13 @@ MouseListener, MouseMotionListener , ActionListener
 
     //Array index where ourLaser and ourMovablePurple currently are
     private int redIndex, purpleIndex;
-    //ALISSA? (for the CircleButton stuff)
+
+    //Used to fire laser using button if solution is correct
     private CircleButton fireButton;
-    private boolean draw = false;
+    private boolean correctSolution, fire;
+    
+    //Piece placement sound
+    File soundFile;
 
     /**
      * Constructor for the Beginner Board
@@ -104,20 +109,24 @@ MouseListener, MouseMotionListener , ActionListener
         setSize(size);
         setLayout(null);
 
-        //ALISSA?
+        //Add needed listener objects
         addMouseListener(this);
         addMouseMotionListener(this);
 
-        //ALISSA?
+        //Set up fire button
         fireButton = new CircleButton("FIRE");
         fireButton.setBounds(595,490,100,100);
         add(fireButton);
         fireButton.addActionListener(this);
+        
+        try{
+            soundFile = new File("ButtonClick.wav");
+        }
+        catch(Exception e) {}
     }
 
     /**
-     * Method which decides where to draw stuff <-- ALISSA? (stuff)
-     * Applet's paint method to manage the graphics
+     * Panel's paint method to manage the graphics
      * 
      * @param g The Graphics reference
      */
@@ -132,13 +141,26 @@ MouseListener, MouseMotionListener , ActionListener
         g.drawImage(ourLaser, 65, 452, null);
         g.drawImage(ourMovablePurple, x, y, null);
 
-        if (draw) { //To draw the laser 
-            g.setColor(Color.RED);
-            Graphics2D g2 = (Graphics2D) g;
-            g2.setStroke(new BasicStroke(10));
-            g.drawLine(105,452,105,400);
-            g.drawLine(105,400,480,400);
-            g.drawLine(486,400,486,138);
+        if (fire) { 
+            if (correctSolution) { 
+                //Draw the laser and "You Win" message
+                g.setColor(Color.RED);
+                Graphics2D g2 = (Graphics2D) g;
+                g2.setStroke(new BasicStroke(10));
+                g.drawLine(105,452,105,400);
+                g.drawLine(105,400,480,400);
+                g.drawLine(486,400,486,138);
+                
+                g.setColor(Color.BLACK);
+                g.setFont(new Font(Font.DIALOG, 0, 40));
+                g.drawString("YOU WIN!", 200, 315);
+            }
+            
+            else {
+                //Draw "Try Again" message
+                g.setFont(new Font(Font.DIALOG, 0, 40));
+                g.drawString("TRY AGAIN!", 180, 315);
+            }
         }
     }
 
@@ -149,8 +171,9 @@ MouseListener, MouseMotionListener , ActionListener
     public void actionPerformed(ActionEvent e) 
     {
         //this is what gets called when the fire button is pressed
-        draw = (mirrorPoints[3] == locations.locationPoints[4][3] && 
-            ourLaser == redLasers[0] && ourMovablePurple == purpleMirrors[1]);
+        fire = true;
+        correctSolution = (mirrorPoints[3] == locations.locationPoints[4][3] 
+        && ourLaser == redLasers[0] && ourMovablePurple == purpleMirrors[1]);
         repaint();
     }
 
@@ -188,6 +211,12 @@ MouseListener, MouseMotionListener , ActionListener
                 repaint();
             }
         }
+        else return;
+        
+        try{
+            mirrorSound();
+        }
+        catch(Exception ex){}
     }
 
     public void mouseEntered(MouseEvent e) {}
@@ -222,6 +251,10 @@ MouseListener, MouseMotionListener , ActionListener
                 y = mirrorPoints[3].y;
             }
 
+            try{
+                mirrorSound();
+            }
+            catch(Exception ex){}
             repaint();
         }
     }
@@ -233,7 +266,7 @@ MouseListener, MouseMotionListener , ActionListener
      * @param e mouse event information
      */
     public void mousePressed(MouseEvent e) {
-        draw = false;
+        fire = correctSolution = false;
         dragging = (e.getX() >= x && e.getX() <= x + MIRROR_SIZE &&
             e.getY() >= y && e.getY() <= y + MIRROR_SIZE);
         xOffset = e.getX() - x;
@@ -246,6 +279,19 @@ MouseListener, MouseMotionListener , ActionListener
             y = e.getY() - yOffset;
             repaint();
         }
+    }
+    
+    private void mirrorSound() throws Exception
+    {
+        AudioInputStream audioIn = AudioSystem.getAudioInputStream(soundFile);
+
+        Clip clip = AudioSystem.getClip();
+
+        clip.open(audioIn);
+
+        clip.start();
+        if (clip.isRunning()) clip.stop();
+
     }
 
     private static void createAndShowGUI() {

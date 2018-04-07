@@ -5,15 +5,16 @@ import java.awt.image.*;
 import java.io.*;
 import javax.imageio.*;
 import java.awt.geom.Line2D;
+import javax.sound.sampled.*;
 ////////////////////////////////////////////////////////////////////////////////
 /**
  * Creates the board with draggable images and rotable mirrors.
  *
- * @author (Alissa, Patrick, Chris, Hieu, Chris)
+ * @author (Alissa, Patrick, Brooke, Hieu, Chris)
  * @version (3/26/18)
  */
 public class IntermediateBoardPanel extends JPanel implements 
-MouseListener, MouseMotionListener , ActionListener
+MouseListener, MouseMotionListener, ActionListener
 {
     //used to drag to correct spot
     private BoardLocations locations;
@@ -21,7 +22,7 @@ MouseListener, MouseMotionListener , ActionListener
     private Point[] sidePanel = {new Point(602, 75), 
             new Point(602, 170), new Point(602, 265)};
 
-    // position of the movable mirrors
+    // position of the movable mirrors, in order they start on side panel
     private int x1, y1, x2, y2, x3, y3;
 
     // am I currently dragging a movable mirror? 
@@ -35,13 +36,13 @@ MouseListener, MouseMotionListener , ActionListener
 
     //all the images we're going to use
     private static Image board;
-    private Image[] redLasers, purpleMirrors, 
-    purpleMirrorsWithTarget, greenMirrors;
+    private Image[] redLasers, purpleMirrors; 
+    private Image[] purpleMirrorsWithTarget, greenMirrors;
     private Image redQuestionMark, purpleMirrorTarget; 
-    private Image purpleQuestionMark, purpleQuestionMark2, 
-    greenQuestionMark, purpleWithRedQuestionMark;
+    private Image purpleQuestionMark, purpleQuestionMark2; 
+    private Image greenQuestionMark, purpleWithRedQuestionMark;
 
-    //what the current image being used by game is for laser and moveable mirror
+    //Current image being used by game for laser and moveable mirror
     private Image ourLaser, ourMoveablePurple1, ourMoveablePurple2, 
     ourPurpleWithTarget, ourMoveableGreen;
 
@@ -49,8 +50,12 @@ MouseListener, MouseMotionListener , ActionListener
     private int redIndex, purpleIndex, purpleIndex2, 
     greenIndex, purpleWithTargetIndex;
 
+    //Used to fire laser using button if solution is correct
     private CircleButton fireButton;
     private boolean correctSolution, fire;
+    
+    //Piece placement sound
+    File soundFile;
 
     public IntermediateBoardPanel() {
         locations = new BoardLocations();
@@ -148,6 +153,12 @@ MouseListener, MouseMotionListener , ActionListener
         fireButton.setBounds(595,490,100,100);
         add(fireButton);
         fireButton.addActionListener(this);
+        
+        try{
+            soundFile = new File("ButtonClick.wav");
+        }
+        catch(Exception e) {}
+        
     }
 
     /**
@@ -171,20 +182,30 @@ MouseListener, MouseMotionListener , ActionListener
 
         if (fire) {
             if (correctSolution) {
+                //Draw the laser and "You Win" message
                 g.setColor(Color.RED);
                 Graphics2D g2 = (Graphics2D) g;
                 g2.setStroke(new BasicStroke(10));
                 g.drawLine(245,205,490,205);
                 g.drawLine(390,205,390,141);
-                g.drawLine(490,205,490,396);
-                g.drawLine(490,396,420,396);
+                g.drawLine(490,205,490,397);
+                g.drawLine(490,397,420,397);
+                
+                g.setColor(Color.BLACK);
+                g.setFont(new Font(Font.DIALOG, 0, 40));
+                g.drawString("YOU WIN!", 200, 315);
+            }
+            
+            else {
+                //Draw "Try Again" message
+                g.setFont(new Font(Font.DIALOG, 0, 40));
+                g.drawString("TRY AGAIN!", 180, 315);
             }
         }
     }
 
     @Override
-    public void actionPerformed(ActionEvent e) 
-    {
+    public void actionPerformed(ActionEvent e) {
         //this is what gets called when the fire button is pressed
         fire = true;
 
@@ -291,6 +312,12 @@ MouseListener, MouseMotionListener , ActionListener
                 repaint();
             }
         }
+        else return;
+        
+        try{
+            mirrorSound();
+        }
+        catch(Exception ex){}
     }
 
     public void mouseEntered(MouseEvent e) {}
@@ -324,6 +351,10 @@ MouseListener, MouseMotionListener , ActionListener
                 y1 = mirrorPoints[3].y;
             }
 
+            try{
+                mirrorSound();
+            }
+            catch(Exception ex){}
             repaint();
         }
         else if (dragging2) {
@@ -350,6 +381,10 @@ MouseListener, MouseMotionListener , ActionListener
                 y2 = mirrorPoints[4].y;
             }
 
+            try{
+                mirrorSound();
+            }
+            catch(Exception ex){}
             repaint();
         }
         else if (dragging3) {
@@ -376,30 +411,40 @@ MouseListener, MouseMotionListener , ActionListener
                 y3 = mirrorPoints[5].y;
             }
 
+            try{
+                mirrorSound();
+            }
+            catch(Exception ex){}
             repaint();
         }
     }
 
     /** 
      * determine if the mouse was pressed in the bounds of
-     * our movable image.
+     * a movable image.
      * 
      * @param e mouse event information
      */
     public void mousePressed(MouseEvent e) {
         correctSolution = fire = false;
+        
+        //determine if mouse click is on first movable purple mirror
         dragging1 = (e.getX() >= x1 && e.getX() <= x1 + MIRROR_SIZE &&
             e.getY() >= y1 && e.getY() <= y1 + MIRROR_SIZE);
         if (dragging1) {
             xOffset = e.getX() - x1;
             yOffset = e.getY() - y1;
         }
+        
+        //determine if mouse click is on second movable purple mirror
         dragging2 = (e.getX() >= x2 && e.getX() <= x2 + MIRROR_SIZE &&
             e.getY() >= y2 && e.getY() <= y2 + MIRROR_SIZE);
         if (dragging2) {
             xOffset = e.getX() - x2;
             yOffset = e.getY() - y2;
         }
+        
+        //determine if mouse click is on movable green mirror
         dragging3 = (e.getX() >= x3 && e.getX() <= x3 + MIRROR_SIZE &&
             e.getY() >= y3 && e.getY() <= y3 + MIRROR_SIZE);
         if (dragging3) {
@@ -425,7 +470,20 @@ MouseListener, MouseMotionListener , ActionListener
             repaint();
         }
     }
+    
+    private void mirrorSound() throws Exception
+    {
+        AudioInputStream audioIn = AudioSystem.getAudioInputStream(soundFile);
 
+        Clip clip = AudioSystem.getClip();
+
+        clip.open(audioIn);
+
+        clip.start();
+        if (clip.isRunning()) clip.stop();
+
+    }
+    
     private static void createAndShowGUI() {
         //Create and set up the window.
         JFrame frame = new JFrame("Intermediate Board Panel");
