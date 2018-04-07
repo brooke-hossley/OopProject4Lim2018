@@ -38,7 +38,8 @@ public class CircleButton extends JButton
                  * Determines if the mouse is pressed within the 
                  * correct X and Y coordinates
                  * 
-                 * @param mE The pressing of the mouse causing the event
+                 * @param mE The mouse event
+                 * @see java.awt.event
                  */
                 @Override
                 public void mousePressed(MouseEvent mE)
@@ -51,7 +52,10 @@ public class CircleButton extends JButton
                 }
 
                 /**
+                 * Determines if the mouse is released
                  * 
+                 * @param mE The mouse event
+                 * @see java.awt.event
                  */
                 @Override
                 public void mouseReleased(MouseEvent me)
@@ -61,7 +65,11 @@ public class CircleButton extends JButton
                 }
 
                 /**
+                 * Determines if the mouse has exited a 
+                 * fixed space
                  * 
+                 * @param mE The mouse event
+                 * @see java.awt.event
                  */
                 @Override
                 public void mouseExited(MouseEvent me)
@@ -72,7 +80,11 @@ public class CircleButton extends JButton
                 }
 
                 /**
+                 * Determines if the mouse is moved within 
+                 * a fixed space
                  * 
+                 * @param mE The mouse event
+                 * @see java.awt.event
                  */
                 @Override
                 public void mouseMoved(MouseEvent me)
@@ -86,7 +98,9 @@ public class CircleButton extends JButton
     }
 
     /**
+     * Determins the diameter of the circle button
      * 
+     * @return The diameter of the button
      */
     private int getDiameter()
     {
@@ -95,7 +109,10 @@ public class CircleButton extends JButton
     }
 
     /**
+     * Constructor for the preferred size of the 
+     * button
      * 
+     * @see java.awt.Dimension
      */
     @Override
     public Dimension getPreferredSize()
@@ -117,7 +134,9 @@ public class CircleButton extends JButton
     }
 
     /**
+     * Method to create the circle button
      * 
+     * @see java.awt.Graphics
      */
     @Override
     public void paintComponent(Graphics g)
@@ -138,9 +157,7 @@ public class CircleButton extends JButton
         {
             g.setColor(Color.RED);
         }
-        g.fillOval(getWidth()/2 - radius, 
-
-            getHeight()/2 - 
+        g.fillOval(getWidth()/2 - radius, getHeight()/2 - 
             radius, diameter, diameter);
 
         g.setColor(Color.BLACK);
@@ -155,19 +172,23 @@ public class CircleButton extends JButton
     }
 
     /**
+     * Method for the laser firing sound
      * 
+     * @throws The possiblility of the file not being found
      */
     private static void laserSound() throws Exception
     {
-        File soundFile = new File("Laser_Gun2.wav");
+        //Creating the Sound file
+        File soundFile = new File("Laser_Gun2.wav"); 
+        //Allocate a AudioInputStream piped from a file
         AudioInputStream audioIn = AudioSystem.getAudioInputStream(soundFile);
-
+        //Allocate a sound Clip resource
         Clip clip = AudioSystem.getClip();
-
+        //Open the clip to load sound samples from the audio input stream
         clip.open(audioIn);
-
+        //Play once
         clip.start();
-        if (clip.isRunning()) clip.stop();
+        if (clip.isRunning()) clip.stop(); //Stop playing 
 
     }
 }
