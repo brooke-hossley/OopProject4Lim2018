@@ -10,7 +10,7 @@ import java.awt.event.MouseEvent;
 import java.io.File;
 import javax.sound.sampled.*;
 /**
- * ALISSA?
+ * PAT?
  * 
  * @author Alissa Ronca, Patrick Barber, Brooke Hossley, 
  *      Chris Adams, Hieu Le
@@ -23,7 +23,7 @@ public class CircleButton extends JButton
     /**
      * The constructor for the FIRE button for the laser
      * 
-     * @param text ALISSA?
+     * @param text PAT?
      */
     protected CircleButton(String text)
     {
