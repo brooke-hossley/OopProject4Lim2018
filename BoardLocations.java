@@ -7,12 +7,13 @@ import java.awt.Point;
  */
 public class BoardLocations
 {
-    // points represent pixel location of top left corner for each of the 25 board positions
+    /*points represent pixel location of top left corner for 
+    each of the 25 board positions*/
     protected Point[][] locationPoints;
-    
+
     int[] xPoints = {65, 161, 256, 352, 448};
     int[] yPoints = {69, 165, 260, 356, 452};
-    
+
     /**
      * Constructor for objects of class BoardLocations
      */
@@ -22,7 +23,8 @@ public class BoardLocations
         locationPoints = new Point[5][5];
         for (int row = 0; row < 5; row++) {
             for (int col = 0; col < 5; col++){
-                locationPoints[row][col] = new Point(xPoints[row], yPoints[col]);
+                locationPoints[row][col] = 
+                new Point(xPoints[row], yPoints[col]);
             }
         }
     }
@@ -41,14 +43,15 @@ public class BoardLocations
                 //loop through the 5 spots
                 for (int col = 0; col < 5; col++){
                     //if its in this col (give or take 8 pixels)
-                    if (yPoints[col] - 8 <= mouseY && mouseY <= yPoints[col] + 88) {
+                    if (yPoints[col] - 8 <= 
+                    mouseY && mouseY <= yPoints[col] + 88) {
                         //return that location
                         return locationPoints[row][col];
                     }
                 }
             }
         }
-        
+
         return null;
     }
 }
