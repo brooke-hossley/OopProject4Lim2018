@@ -1,9 +1,10 @@
 import java.awt.Point;
 /**
- * Write a description of class BoardLocations here.
+ * Mapping of the LaserMaze board
  *
- * @author (your name)
- * @version (a version number or a date)
+ * @author Alissa Ronca, Patrick Barber, Brooke Hossley,
+ *         Chris Adams, Hieu Le
+ * @version Spring 2018
  */
 public class BoardLocations
 {
@@ -19,7 +20,7 @@ public class BoardLocations
      */
     public BoardLocations()
     {
-        // initialise instance variables
+        //Initialise instance variables
         locationPoints = new Point[5][5];
         for (int row = 0; row < 5; row++) {
             for (int col = 0; col < 5; col++){
@@ -30,29 +31,31 @@ public class BoardLocations
     }
 
     /**
-     * Finds closest corresponding board drop point given x and y of mouse release location,
-     * or returns null if mouse is outside the bounds of the game board
+     * Finds closest corresponding board drop point given x and y 
+     * of the mouse release location, or returns null if mouse is outside 
+     * the bounds of the game board
      *
-     * @param  y  a sample parameter for a method
-     * @return    the sum of x and y
+     * @param mouseX The x-coordinate of the mouse
+     * @param mouseY The y-coordinate of the mouse
+     * @return The closest board drop point
      */
-    public Point getDropPoint(int mouseX, int mouseY)
+    protected Point getDropPoint(int mouseX, int mouseY)
     {
         for (int row = 0; row < 5; row++) {
-            //if its in this row (give or take 8 pixels)
+            //If the mouse in this row (about an 8-pixel difference)
             if (xPoints[row] - 8 <= mouseX && mouseX <= xPoints[row] + 88) {
-                //loop through the 5 spots
+                //Loop through the 5 columns of each row
                 for (int col = 0; col < 5; col++){
-                    //if its in this col (give or take 8 pixels)
+                    //If the mouse in this row (about an 8-pixel difference)
                     if (yPoints[col] - 8 <= 
                     mouseY && mouseY <= yPoints[col] + 88) {
-                        //return that location
+                        //Return that location
                         return locationPoints[row][col];
                     }
                 }
             }
         }
-
+        //Location null if the mouse is outside of the board
         return null;
     }
 }
