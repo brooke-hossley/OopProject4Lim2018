@@ -138,7 +138,7 @@ public class CircleButton extends JButton
         {
             g.setColor(Color.RED);
         }
-        g.fillOval(getWidth()/2 - radius, 
+        g.fillOval(getWidth()/2 - radius, 
 
             getHeight()/2 - 
             radius, diameter, diameter);
@@ -148,13 +148,15 @@ public class CircleButton extends JButton
         FontMetrics metrics = g.getFontMetrics(getFont());
         int stringWidth = metrics.stringWidth(getText());
         int stringHeight = metrics.getHeight();
-        g.drawString(getText(), 
+        g.drawString(getText(), 
 
             getDiameter()/3 - stringWidth/2, 
-
             getHeight()/2 + stringHeight/2);
     }
 
+    /**
+     * 
+     */
     private static void laserSound() throws Exception
     {
         File soundFile = new File("Laser_Gun2.wav");

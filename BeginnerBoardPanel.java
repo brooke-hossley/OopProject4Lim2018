@@ -9,42 +9,46 @@ import java.awt.geom.Line2D;
 /**
  * Creates the board with draggable images and rotable mirrors.
  *
- * @author (Alissa, Patrick, Chris, Hieu, Chris)
- * @version (3/26/18)
+ * @author Alissa Ronca, Patrick Barber, Brooke Hossley,
+ *         Chris Adams, Hieu Le
+ * @version Spring 2018
  */
 public class BeginnerBoardPanel extends JPanel implements 
 MouseListener, MouseMotionListener , ActionListener
 {
-    //used to drag to correct spot
+    //Used to drag mirrors to correct spot
     private BoardLocations locations;
     private Point mirrorPoints[], sidePanel;
 
-    // position of the movable purple mirror
+    //Position of the movable purple mirror
     private int x, y;
 
-    // am I currently dragging the movable mirror? 
+    //Dragging the movable mirror? 
     private boolean dragging;
 
-    // remember mouse "grab point" in the movable mirror 
+    //Remember mouses "grab point" for the movable mirror 
     private int xOffset, yOffset;
 
-    // icon size 
+    //Icon size 
     public static final int MIRROR_SIZE = 80;
 
-    //all the images we're going to use
+    //All images used
     private static Image board;
     private Image[] redLasers,  purpleMirrors;
     private Image redQuestionMark, purpleMirrorTarget, purpleQuestionMark;
 
-    //what the current image being used by game is for laser and moveable mirror
+    //Current image being used
     private Image ourLaser, ourMovablePurple;
 
-    //array index ourLaser and ourMovablePurple currently are
+    //Array index where ourLaser and ourMovablePurple currently are
     private int redIndex, purpleIndex;
-
+    //ALISSA? (for the CircleButton stuff)
     private CircleButton fireButton;
     private boolean draw = false;
 
+    /**
+     * Constructor for the Beginner Board
+     */
     public BeginnerBoardPanel() {
         locations = new BoardLocations();
         sidePanel = new Point(602, 75);
@@ -54,7 +58,7 @@ MouseListener, MouseMotionListener , ActionListener
         mirrorPoints[2] = locations.locationPoints[0][4];
         mirrorPoints[3] = sidePanel;
 
-        //set images we start with on board
+        //Starting images 
         String dir = "Images\\";
         board = new ImageIcon(dir + "Board.PNG").getImage();
         redQuestionMark = new ImageIcon(dir + 
@@ -66,11 +70,11 @@ MouseListener, MouseMotionListener , ActionListener
         ourLaser = redQuestionMark;
         ourMovablePurple = purpleQuestionMark;
 
-        // initial position of our movable mirror
+        //Initial position of movable mirror
         x = 602;
         y = 75;
 
-        //load in purple and red piece images for rotation later
+        //Load in purple and red piece images for rotation later
         purpleMirrors = new Image[4];
         purpleMirrors[0] = new ImageIcon(dir + 
             "PurpleMirrorUp.JPG").getImage();
@@ -91,7 +95,7 @@ MouseListener, MouseMotionListener , ActionListener
         redLasers[3] = new ImageIcon(dir + 
             "LaserLeft.JPG").getImage();
 
-        //set window to correct size
+        //Set window to correct size
         Dimension size = new Dimension(board.getWidth(null), 
                 board.getHeight(null));
         setPreferredSize(size);
@@ -100,9 +104,11 @@ MouseListener, MouseMotionListener , ActionListener
         setSize(size);
         setLayout(null);
 
+        //ALISSA?
         addMouseListener(this);
         addMouseMotionListener(this);
 
+        //ALISSA?
         fireButton = new CircleButton("FIRE");
         fireButton.setBounds(595,490,100,100);
         add(fireButton);
@@ -110,23 +116,23 @@ MouseListener, MouseMotionListener , ActionListener
     }
 
     /**
-     * THE REALLY IMPORTANT METHOD which decides where to draw stuff
-     * Applet's paint method to manage our graphics
+     * Method which decides where to draw stuff <-- ALISSA? (stuff)
+     * Applet's paint method to manage the graphics
      * 
-     * @param g the Graphics reference
+     * @param g The Graphics reference
      */
     public void paintComponent(Graphics g) {
         super.paintComponent(g);
-        //these will stay same because hardcoded
+        //Static images 
         g.drawImage(board, 0, 0, null);
         g.drawImage(purpleMirrorTarget, 448, 69, null);
         g.drawImage(purpleMirrors[3], 65, 356, null);
 
-        //these can both rotate and purple can be dragged
+        //Rotatable and draggable images
         g.drawImage(ourLaser, 65, 452, null);
         g.drawImage(ourMovablePurple, x, y, null);
 
-        if (draw) {
+        if (draw) { //To draw the laser 
             g.setColor(Color.RED);
             Graphics2D g2 = (Graphics2D) g;
             g2.setStroke(new BasicStroke(10));
@@ -136,6 +142,9 @@ MouseListener, MouseMotionListener , ActionListener
         }
     }
 
+    /**
+     * (@see documentation to referance to the overridden method)To be fixed 
+     */
     @Override
     public void actionPerformed(ActionEvent e) 
     {
