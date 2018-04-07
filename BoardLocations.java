@@ -11,8 +11,8 @@ public class BoardLocations
     each of the 25 board positions*/
     protected Point[][] locationPoints;
 
-    int[] xPoints = {65, 161, 256, 352, 448};
-    int[] yPoints = {69, 165, 260, 356, 452};
+    private int[] xPoints = {65, 161, 256, 352, 448};
+    private int[] yPoints = {69, 165, 260, 356, 452};
 
     /**
      * Constructor for objects of class BoardLocations
@@ -30,7 +30,8 @@ public class BoardLocations
     }
 
     /**
-     * An example of a method - replace this comment with your own
+     * Finds closest corresponding board drop point given x and y of mouse release location,
+     * or returns null if mouse is outside the bounds of the game board
      *
      * @param  y  a sample parameter for a method
      * @return    the sum of x and y
