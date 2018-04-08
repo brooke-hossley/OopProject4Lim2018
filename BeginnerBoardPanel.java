@@ -7,7 +7,7 @@ import javax.imageio.*;
 import java.awt.geom.Line2D;
 import javax.sound.sampled.*;
 /**
- * Creates the board with draggable images and rotable mirrors.
+ * Class to create Laser Maze board game based on the beginner card
  *
  * @author Alissa Ronca, Patrick Barber, Brooke Hossley,
  *         Chris Adams, Hieu Le
@@ -190,7 +190,7 @@ MouseListener, MouseMotionListener, ActionListener
     }
 
     /**
-     * Determins what each mouse click does
+     * Determines what each mouse click does
      * 
      * @param e The action calling the event
      */
@@ -247,7 +247,7 @@ MouseListener, MouseMotionListener, ActionListener
     public void mouseMoved(MouseEvent e) {}
 
     /**
-     * Determins what each mouse release does
+     * Determines what each mouse release does
      * 
      * @param e Th action calling the event
      */
@@ -357,8 +357,6 @@ MouseListener, MouseMotionListener, ActionListener
 
     /**
      * Main method to run the Beginner Board
-     * 
-     * @param args Unused
      */
     public static void main(String[] args) 
     {
