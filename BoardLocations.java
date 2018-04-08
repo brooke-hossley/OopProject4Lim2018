@@ -1,6 +1,7 @@
 import java.awt.Point;
 /**
- * Mapping of the LaserMaze board
+ * Class used to represent all 25 possible game piece locations 
+ * in the board of a laser maze game 
  *
  * @author Alissa Ronca, Patrick Barber, Brooke Hossley,
  *         Chris Adams, Hieu Le
@@ -8,10 +9,11 @@ import java.awt.Point;
  */
 public class BoardLocations
 {
-    /*points represent pixel location of top left corner for 
+    /** Points represent pixel location of top left corner for 
     each of the 25 board positions*/
     protected Point[][] locationPoints;
 
+    // The x and y starting pixels
     private int[] xPoints = {65, 161, 256, 352, 448};
     private int[] yPoints = {69, 165, 260, 356, 452};
 
@@ -37,16 +39,16 @@ public class BoardLocations
      *
      * @param mouseX The x-coordinate of the mouse
      * @param mouseY The y-coordinate of the mouse
-     * @return The closest board drop point
+     * @return The corresponding board drop point
      */
     protected Point getDropPoint(int mouseX, int mouseY)
     {
         for (int row = 0; row < 5; row++) {
-            //If the mouse in this row (about an 8-pixel difference)
+            //If the mouse is within 8 pixels of this row
             if (xPoints[row] - 8 <= mouseX && mouseX <= xPoints[row] + 88) {
-                //Loop through the 5 columns of each row
+                //Loop through the 5 columns of the row
                 for (int col = 0; col < 5; col++){
-                    //If the mouse in this row (about an 8-pixel difference)
+                    //If the mouse is within 8 pixels of this column
                     if (yPoints[col] - 8 <= 
                     mouseY && mouseY <= yPoints[col] + 88) {
                         //Return that location
