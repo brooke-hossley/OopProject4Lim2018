@@ -249,7 +249,7 @@ MouseListener, MouseMotionListener, ActionListener
     /**
      * Determines what each mouse release does
      * 
-     * @param e Th action calling the event
+     * @param e The action calling the event
      */
     public void mouseReleased(MouseEvent e) 
     {
@@ -357,6 +357,8 @@ MouseListener, MouseMotionListener, ActionListener
 
     /**
      * Main method to run the Beginner Board
+     *
+     * @param args unused
      */
     public static void main(String[] args) 
     {
