@@ -6,7 +6,6 @@ import java.io.*;
 import javax.imageio.*;
 import java.awt.geom.Line2D;
 import javax.sound.sampled.*;
-////////////////////////////////////////////////////////////////////////////////
 /**
  * Creates the board with draggable images and rotable mirrors.
  *
@@ -47,14 +46,15 @@ MouseListener, MouseMotionListener, ActionListener
     //Used to fire laser using button if solution is correct
     private CircleButton fireButton;
     private boolean correctSolution, fire;
-    
-    //Piece placement sound
-    File soundFile;
+
+    //Piece placement sound 
+    File soundFilePlacement;
 
     /**
      * Constructor for the Beginner Board
      */
-    public BeginnerBoardPanel() {
+    public BeginnerBoardPanel() 
+    {
         locations = new BoardLocations();
         sidePanel = new Point(602, 75);
         mirrorPoints = new Point[4];
@@ -118,9 +118,10 @@ MouseListener, MouseMotionListener, ActionListener
         fireButton.setBounds(595,490,100,100);
         add(fireButton);
         fireButton.addActionListener(this);
-        
-        try{
-            soundFile = new File("ButtonClick.wav");
+
+        try
+        {
+            soundFilePlacement = new File("ButtonClick.wav");
         }
         catch(Exception e) {}
     }
@@ -130,7 +131,8 @@ MouseListener, MouseMotionListener, ActionListener
      * 
      * @param g The Graphics reference
      */
-    public void paintComponent(Graphics g) {
+    public void paintComponent(Graphics g) 
+    {
         super.paintComponent(g);
         //Static images 
         g.drawImage(board, 0, 0, null);
@@ -141,8 +143,10 @@ MouseListener, MouseMotionListener, ActionListener
         g.drawImage(ourLaser, 65, 452, null);
         g.drawImage(ourMovablePurple, x, y, null);
 
-        if (fire) { 
-            if (correctSolution) { 
+        if (fire) 
+        { 
+            if (correctSolution) 
+            { 
                 //Draw the laser and "You Win" message
                 g.setColor(Color.RED);
                 Graphics2D g2 = (Graphics2D) g;
@@ -150,71 +154,88 @@ MouseListener, MouseMotionListener, ActionListener
                 g.drawLine(105,452,105,400);
                 g.drawLine(105,400,480,400);
                 g.drawLine(486,400,486,138);
-                
+
+                g.setColor(Color.GREEN);
+                g.fillRect(190, 275, 205, 50);
                 g.setColor(Color.BLACK);
-                g.setFont(new Font(Font.DIALOG, 0, 40));
+                g.setFont(new Font(Font.DIALOG, Font.BOLD, 40));
                 g.drawString("YOU WIN!", 200, 315);
             }
-            
-            else {
+
+            else 
+            {
                 //Draw "Try Again" message
-                g.setFont(new Font(Font.DIALOG, 0, 40));
+                g.setColor(Color.RED);
+                g.fillRect(175, 275, 235, 50);
+                g.setColor(Color.BLACK);
+                g.setFont(new Font(Font.DIALOG, Font.BOLD, 40));
                 g.drawString("TRY AGAIN!", 180, 315);
             }
         }
     }
 
     /**
-     * (@see documentation to referance to the overridden method)To be fixed 
+     * Called when the fire button is pressed
+     * 
+     * @param e The action calling the event
+     * @see java.awt.event
      */
     @Override
     public void actionPerformed(ActionEvent e) 
     {
-        //this is what gets called when the fire button is pressed
         fire = true;
         correctSolution = (mirrorPoints[3] == locations.locationPoints[4][3] 
-        && ourLaser == redLasers[0] && ourMovablePurple == purpleMirrors[1]);
+            && ourLaser == redLasers[0] && ourMovablePurple == purpleMirrors[1]);
         repaint();
     }
 
-    public void mouseClicked(MouseEvent e) {
-
-        //if clicked on laser rotate it
+    /**
+     * Determins what each mouse click does
+     * 
+     * @param e The action calling the event
+     */
+    public void mouseClicked(MouseEvent e)
+    {
+        //If clicked on laser, rotate it
         if (e.getX() >= 65 && e.getX() <= 65 + MIRROR_SIZE &&
-        e.getY() >= 452 && e.getY() <= 452 + MIRROR_SIZE) {
-
-            if (ourLaser == redQuestionMark || ourLaser == redLasers[3]) {
+        e.getY() >= 452 && e.getY() <= 452 + MIRROR_SIZE) 
+        {
+            if (ourLaser == redQuestionMark || ourLaser == redLasers[3]) 
+            {
                 ourLaser = redLasers[0];
                 redIndex = 0;
                 repaint();
             }
-            else {
+            else 
+            {
                 redIndex++; 
                 ourLaser = redLasers[redIndex];
                 repaint();
             }
         }
-
-        //if clicked on movable mirror rotate it
+        //If clicked on movable mirror, rotate it
         else if (e.getX() >= x && e.getX() <= x + MIRROR_SIZE &&
-        e.getY() >= y && e.getY() <= y + MIRROR_SIZE) {
-
+        e.getY() >= y && e.getY() <= y + MIRROR_SIZE) 
+        {
             if (ourMovablePurple == purpleQuestionMark || 
-            ourMovablePurple == purpleMirrors[3]) {
+            ourMovablePurple == purpleMirrors[3]) 
+            {
                 ourMovablePurple = purpleMirrors[0];
                 purpleIndex = 0;
                 repaint();
             }
-            else {
+            else 
+            {
                 purpleIndex++; 
                 ourMovablePurple = purpleMirrors[purpleIndex];
                 repaint();
             }
         }
         else return;
-        
-        try{
-            mirrorSound();
+
+        try
+        {
+            mirrorSoundPlacement();
         }
         catch(Exception ex){}
     }
@@ -225,34 +246,44 @@ MouseListener, MouseMotionListener, ActionListener
 
     public void mouseMoved(MouseEvent e) {}
 
-    public void mouseReleased(MouseEvent e) {
-        if (dragging) {
-            //find drop location for where mouse was released
+    /**
+     * Determins what each mouse release does
+     * 
+     * @param e Th action calling the event
+     */
+    public void mouseReleased(MouseEvent e) 
+    {
+        if (dragging) 
+        {
+            //Drop location for where mouse was released
             Point drop = locations.getDropPoint(e.getX(), e.getY());
-
-            //if not within board put on side panel
-            if (drop == null) {
+            //If not within board put on side panel
+            if (drop == null) 
+            {
                 x = 602;
                 y = 75;
                 mirrorPoints[3] = sidePanel;
             }
 
-            //if within board and not over another piece, place it
+            //If within board and not over another piece, place it
             else if (drop != mirrorPoints[0] && drop != mirrorPoints[1] && 
-            drop != mirrorPoints[2]) {
+            drop != mirrorPoints[2]) 
+            {
                 x = drop.x;
                 y = drop.y;
                 mirrorPoints[3] = drop;
             }
 
-            //if over another piece leave it where it came from
-            else {
+            //If over another piece, leave it where it came from
+            else 
+            {
                 x = mirrorPoints[3].x;
                 y = mirrorPoints[3].y;
             }
 
-            try{
-                mirrorSound();
+            try
+            {
+                mirrorSoundPlacement();
             }
             catch(Exception ex){}
             repaint();
@@ -260,12 +291,13 @@ MouseListener, MouseMotionListener, ActionListener
     }
 
     /** 
-     * determine if the mouse was pressed in the bounds of
-     * our movable image.
+     * Determines if the mouse was pressed in the bounds of
+     * the movable image.
      * 
-     * @param e mouse event information
+     * @param e The action causing the event
      */
-    public void mousePressed(MouseEvent e) {
+    public void mousePressed(MouseEvent e) 
+    {
         fire = correctSolution = false;
         dragging = (e.getX() >= x && e.getX() <= x + MIRROR_SIZE &&
             e.getY() >= y && e.getY() <= y + MIRROR_SIZE);
@@ -273,17 +305,29 @@ MouseListener, MouseMotionListener, ActionListener
         yOffset = e.getY() - y;
     }
 
-    public void mouseDragged(MouseEvent e) {
-        if (dragging) {
+    /**
+     * Determins if the mouse is dragging
+     * 
+     * @param e The action causing the event
+     */
+    public void mouseDragged(MouseEvent e) 
+    {
+        if (dragging) 
+        {
             x = e.getX() - xOffset;
             y = e.getY() - yOffset;
             repaint();
         }
     }
-    
-    private void mirrorSound() throws Exception
+
+    /**
+     * Method for the placing and rotating mirrors/laser sound 
+     * 
+     * @throws The possiblility of the file not being found
+     */
+    private void mirrorSoundPlacement() throws Exception
     {
-        AudioInputStream audioIn = AudioSystem.getAudioInputStream(soundFile);
+        AudioInputStream audioIn = AudioSystem.getAudioInputStream(soundFilePlacement);
 
         Clip clip = AudioSystem.getClip();
 
@@ -294,7 +338,11 @@ MouseListener, MouseMotionListener, ActionListener
 
     }
 
-    private static void createAndShowGUI() {
+    /**
+     * Creates the JFrame for the game
+     */
+    private static void createAndShowGUI() 
+    {
         //Create and set up the window.
         JFrame frame = new JFrame("BeginnerBoardPanel");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -306,11 +354,17 @@ MouseListener, MouseMotionListener, ActionListener
         frame.setVisible(true);
     }
 
-    public static void main(String[] args) {
+    /**
+     * Main method to run the Beginner Board
+     */
+    public static void main(String[] args) 
+    {
         //Schedule a job for the event-dispatching thread:
         //creating and showing this application's GUI.
-        javax.swing.SwingUtilities.invokeLater(new Runnable() {
-                public void run() {
+        javax.swing.SwingUtilities.invokeLater(new Runnable() 
+            {
+                public void run() 
+                {
                     createAndShowGUI();
                 }
             });
