@@ -235,7 +235,7 @@ MouseListener, MouseMotionListener, ActionListener
 
         try
         {
-            mirrorSoundPlacement();
+            mirrorSound();
         }
         catch(Exception ex){}
     }
@@ -257,7 +257,7 @@ MouseListener, MouseMotionListener, ActionListener
         {
             //Drop location for where mouse was released
             Point drop = locations.getDropPoint(e.getX(), e.getY());
-            //If not within board put on side panel
+            //If not within board, return the mirror to the side panel
             if (drop == null) 
             {
                 x = 602;
@@ -283,7 +283,7 @@ MouseListener, MouseMotionListener, ActionListener
 
             try
             {
-                mirrorSoundPlacement();
+                mirrorSound();
             }
             catch(Exception ex){}
             repaint();
@@ -325,16 +325,17 @@ MouseListener, MouseMotionListener, ActionListener
      * 
      * @throws The possiblility of the file not being found
      */
-    private void mirrorSoundPlacement() throws Exception
+    private void mirrorSound() throws Exception
     {
+        //Allocate a AudioInputStream piped from a file
         AudioInputStream audioIn = AudioSystem.getAudioInputStream(soundFilePlacement);
-
+        //Allocate a sound Clip resource
         Clip clip = AudioSystem.getClip();
-
+        //Open the clip to load sound samples from the audio input stream
         clip.open(audioIn);
-
+        //Play once
         clip.start();
-        if (clip.isRunning()) clip.stop();
+        if (clip.isRunning()) clip.stop();//Stop playing 
 
     }
 
