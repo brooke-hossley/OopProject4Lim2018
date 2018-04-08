@@ -357,6 +357,8 @@ MouseListener, MouseMotionListener, ActionListener
 
     /**
      * Main method to run the Beginner Board
+     * 
+     * @param args Unused
      */
     public static void main(String[] args) 
     {

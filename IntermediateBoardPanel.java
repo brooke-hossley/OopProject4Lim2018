@@ -35,7 +35,7 @@ MouseListener, MouseMotionListener, ActionListener
     public static final int MIRROR_SIZE = 80;
 
     //Starting images
-    private static Image board;
+    protected static Image board;
     private Image[] redLasers, purpleMirrors; 
     private Image[] purpleMirrorsWithTarget, greenMirrors;
     private Image redQuestionMark, purpleMirrorTarget; 
@@ -563,6 +563,8 @@ MouseListener, MouseMotionListener, ActionListener
 
     /**
      * Main method to run the Beginner Board
+     * 
+     * @param args Unused
      */
     public static void main(String[] args) 
     {
