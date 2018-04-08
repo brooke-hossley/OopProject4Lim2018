@@ -7,7 +7,7 @@ import javax.imageio.*;
 import java.awt.geom.Line2D;
 import javax.sound.sampled.*;
 /**
- * Creates the board with draggable images and rotable mirrors.
+ * Class to create Laser Maze board game based on the intermediate card
  *
  * @author Alissa Ronca, Patrick Barber, Brooke Hossley, 
  *         Chris Adams, Hieu Le
@@ -245,7 +245,7 @@ MouseListener, MouseMotionListener, ActionListener
     }
 
     /**
-     * Determins what each mouse click does
+     * Determines what each mouse click does
      * 
      * @param e The action calling the event
      */
@@ -355,9 +355,9 @@ MouseListener, MouseMotionListener, ActionListener
     public void mouseMoved(MouseEvent e) {}
 
     /**
-     * Determins what each mouse release does
+     * Determines what each mouse release does
      * 
-     * @param e Th action calling the event
+     * @param e The action calling the event
      */
     public void mouseReleased(MouseEvent e) 
     {
@@ -501,7 +501,7 @@ MouseListener, MouseMotionListener, ActionListener
     }
 
     /**
-     * Determins if the mouse is dragging
+     * Determines if the mouse is dragging one of the 3 mirrors
      * 
      * @param e The action causing the event
      */
