@@ -64,7 +64,7 @@ MouseListener, MouseMotionListener, ActionListener
         mirrorPoints[3] = sidePanel;
 
         //Starting images 
-        String dir = "Images\\";
+        String dir = "Images//";
         board = new ImageIcon(dir + "Board.PNG").getImage();
         redQuestionMark = new ImageIcon(dir + 
             "RedLaserQuestion.JPG").getImage();
@@ -168,7 +168,7 @@ MouseListener, MouseMotionListener, ActionListener
                 g.setColor(Color.RED);
                 g.fillRect(175, 275, 235, 50);
                 g.setColor(Color.BLACK);
-                g.setFont(new Font(Font.DIALOG, Font.BOLD, 40));
+                g.setFont(new Font(Font.DIALOG, 0, 40));
                 g.drawString("TRY AGAIN!", 180, 315);
             }
         }
