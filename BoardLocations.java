@@ -1,7 +1,7 @@
 import java.awt.Point;
 /**
  * Class used to represent all 25 possible game piece locations 
- * in the board of a laser maze game 
+ * in the board of a Laser Maze game 
  *
  * @author Alissa Ronca, Patrick Barber, Brooke Hossley,
  *         Chris Adams, Hieu Le
@@ -9,7 +9,7 @@ import java.awt.Point;
  */
 public class BoardLocations
 {
-    /** Points represent pixel location of top left corner for 
+    /* Points represent pixel location of top left corner for 
     each of the 25 board positions*/
     protected Point[][] locationPoints;
 

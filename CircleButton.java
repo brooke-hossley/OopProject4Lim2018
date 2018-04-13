@@ -10,7 +10,7 @@ import java.awt.event.MouseEvent;
 import java.io.File;
 import javax.sound.sampled.*;
 /**
- * PAT?
+ * Class to construct the fire button
  * 
  * @author Alissa Ronca, Patrick Barber, Brooke Hossley, 
  *      Chris Adams, Hieu Le
@@ -23,7 +23,7 @@ public class CircleButton extends JButton
     /**
      * The constructor for the FIRE button for the laser
      * 
-     * @param text PAT?
+     * @param text The text to appear on the button
      */
     protected CircleButton(String text)
     {
@@ -58,7 +58,7 @@ public class CircleButton extends JButton
                  * @see java.awt.event
                  */
                 @Override
-                public void mouseReleased(MouseEvent me)
+                public void mouseReleased(MouseEvent mE)
                 {
                     mousePressed = false;
                     repaint();
@@ -72,7 +72,7 @@ public class CircleButton extends JButton
                  * @see java.awt.event
                  */
                 @Override
-                public void mouseExited(MouseEvent me)
+                public void mouseExited(MouseEvent mE)
                 {
                     mouseOver = false;
                     mousePressed = false;
@@ -87,9 +87,9 @@ public class CircleButton extends JButton
                  * @see java.awt.event
                  */
                 @Override
-                public void mouseMoved(MouseEvent me)
+                public void mouseMoved(MouseEvent mE)
                 {
-                    mouseOver = contains(me.getX(), me.getY());
+                    mouseOver = contains(mE.getX(), mE.getY());
                     repaint();
                 }   
             };
@@ -112,6 +112,7 @@ public class CircleButton extends JButton
      * Constructor for the preferred size of the 
      * button
      * 
+     * @return The new dimension of the button
      * @see java.awt.Dimension
      */
     @Override
@@ -124,7 +125,12 @@ public class CircleButton extends JButton
     }
 
     /**
+     * Determins if the mouse click is within the fire button
      * 
+     * @param x The x coordinate
+     * @param y The y coordinate
+     * @return Whether or not the mouse is within the fire button
+     * @see java.lang.String
      */
     @Override
     public boolean contains(int x, int y)
@@ -134,7 +140,7 @@ public class CircleButton extends JButton
     }
 
     /**
-     * Method to create the circle button
+     * Method to create the circle button graphic
      * 
      * @see java.awt.Graphics
      */
@@ -143,15 +149,15 @@ public class CircleButton extends JButton
     {
         int diameter = getDiameter();
         int radius = diameter/2;
-
+        
         if(mousePressed)
         {
             g.setColor(new Color(204, 0, 0));
-            try{
+            try
+            {
                 laserSound();
             }
             catch(Exception e){}
-
         }
         else
         {

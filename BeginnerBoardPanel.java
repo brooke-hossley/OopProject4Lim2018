@@ -50,6 +50,9 @@ MouseListener, MouseMotionListener, ActionListener
     //Piece placement sound 
     File soundFilePlacement;
 
+    //The JFrame to display the game
+    private static JFrame frame;
+
     /**
      * Constructor for the Beginner Board
      */
@@ -64,7 +67,7 @@ MouseListener, MouseMotionListener, ActionListener
         mirrorPoints[3] = sidePanel;
 
         //Starting images 
-        String dir = "Images//";
+        String dir = "Images\\";
         board = new ImageIcon(dir + "Board.PNG").getImage();
         redQuestionMark = new ImageIcon(dir + 
             "RedLaserQuestion.JPG").getImage();
@@ -147,7 +150,9 @@ MouseListener, MouseMotionListener, ActionListener
         { 
             if (correctSolution) 
             { 
-                //Draw the laser and "You Win" message
+                /*Draw the laser and "You Win" message
+                and the option to return to the menu*/
+
                 g.setColor(Color.RED);
                 Graphics2D g2 = (Graphics2D) g;
                 g2.setStroke(new BasicStroke(10));
@@ -160,6 +165,23 @@ MouseListener, MouseMotionListener, ActionListener
                 g.setColor(Color.BLACK);
                 g.setFont(new Font(Font.DIALOG, Font.BOLD, 40));
                 g.drawString("YOU WIN!", 200, 315);
+                g.drawString("Back to Menu?", 160, 365);
+                JButton y = new JButton("YES");
+                y.setFont(new Font("Arial", Font.BOLD, 20));
+                y.setBackground(Color.GREEN);
+                y.setBounds(160,380,100,50);
+                add(y);
+                y.addActionListener(this);
+                y.setActionCommand("YES");
+                add(y);
+                JButton n = new JButton("NO");
+                n.setFont(new Font("Arial", Font.BOLD, 20));
+                n.setBackground(Color.RED);
+                n.setBounds(325,380,100,50);
+                add(n);
+                n.addActionListener(this);
+                n.setActionCommand("NO");
+                add(n);
             }
 
             else 
@@ -168,14 +190,14 @@ MouseListener, MouseMotionListener, ActionListener
                 g.setColor(Color.RED);
                 g.fillRect(175, 275, 235, 50);
                 g.setColor(Color.BLACK);
-                g.setFont(new Font(Font.DIALOG, 0, 40));
+                g.setFont(new Font(Font.DIALOG, Font.BOLD, 40));
                 g.drawString("TRY AGAIN!", 180, 315);
             }
         }
     }
 
     /**
-     * Called when the fire button is pressed
+     * Called when actionListeners are triggered
      * 
      * @param e The action calling the event
      * @see java.awt.event
@@ -185,8 +207,16 @@ MouseListener, MouseMotionListener, ActionListener
     {
         fire = true;
         correctSolution = (mirrorPoints[3] == locations.locationPoints[4][3] 
-            && ourLaser == redLasers[0] && ourMovablePurple == purpleMirrors[1]);
+            && ourLaser == redLasers[0] && ourMovablePurple == 
+            purpleMirrors[1]);
         repaint();
+        String action = e.getActionCommand();
+        if(action.equals("YES")){
+            Driver.createAndShowGUI();
+        }
+        else if(action.equals("NO")){
+            frame.dispose();
+        }
     }
 
     /**
@@ -323,12 +353,13 @@ MouseListener, MouseMotionListener, ActionListener
     /**
      * Method for the placing and rotating mirrors/laser sound 
      * 
-     * @throws The possiblility of the file not being found
+     * @throws Exception The possiblility of the file not being found
      */
     private void mirrorSound() throws Exception
     {
         //Allocate a AudioInputStream piped from a file
-        AudioInputStream audioIn = AudioSystem.getAudioInputStream(soundFilePlacement);
+        AudioInputStream audioIn = 
+            AudioSystem.getAudioInputStream(soundFilePlacement);
         //Allocate a sound Clip resource
         Clip clip = AudioSystem.getClip();
         //Open the clip to load sound samples from the audio input stream
@@ -336,16 +367,15 @@ MouseListener, MouseMotionListener, ActionListener
         //Play once
         clip.start();
         if (clip.isRunning()) clip.stop();//Stop playing 
-
     }
 
     /**
      * Creates the JFrame for the game
      */
-    private static void createAndShowGUI() 
+    protected static void createAndShowGUI() 
     {
         //Create and set up the window.
-        JFrame frame = new JFrame("BeginnerBoardPanel");
+        frame = new JFrame("BeginnerBoardPanel");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         BeginnerBoardPanel panel = new BeginnerBoardPanel();
         frame.getContentPane().add(panel);
@@ -353,23 +383,5 @@ MouseListener, MouseMotionListener, ActionListener
         //Display the window.
         frame.pack();
         frame.setVisible(true);
-    }
-
-    /**
-     * Main method to run the Beginner Board
-     *
-     * @param args unused
-     */
-    public static void main(String[] args) 
-    {
-        //Schedule a job for the event-dispatching thread:
-        //creating and showing this application's GUI.
-        javax.swing.SwingUtilities.invokeLater(new Runnable() 
-            {
-                public void run() 
-                {
-                    createAndShowGUI();
-                }
-            });
     }
 }
