@@ -18,5 +18,6 @@ BeginnerBoardPanel.java
 BoardLocations.java
 CircleButton.java
 Driver.java
+Help.java
 IntermediateBoardPanel.java
 ```
