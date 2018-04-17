@@ -30,8 +30,9 @@ public class Driver extends JPanel implements ActionListener
         //Images with paths
         String dir = "Images\\";
         String dir2 = "Rules\\";
-        logo = new ImageIcon("Logo.jpg").getImage();
+        logo = new ImageIcon(dir + "Logo.jpg").getImage();
         background = new ImageIcon(dir + "background.jpg").getImage();
+        welcome = new ImageIcon(dir + "Welcome.png").getImage();
         catGif = new ImageIcon(dir2 + "lasercat.gif").getImage();
 
         //Set window to correct size
@@ -136,7 +137,7 @@ public class Driver extends JPanel implements ActionListener
     /**
      * Main method to run the Menu
      * 
-     * @param args Command line arguments
+     * @param args Unused
      */
     public static void main(String[] args) 
     {
